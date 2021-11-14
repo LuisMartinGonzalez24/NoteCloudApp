@@ -17,7 +17,7 @@ const LoginScreen = () => {
                     <input
                         type='text'
                         value=''
-                        placeholder='email address'
+                        placeholder='Email address'
                         className='auth__input-form mb14'
                     />
                 </div>
@@ -30,7 +30,7 @@ const LoginScreen = () => {
                     <input
                         type='text'
                         value=''
-                        placeholder='password'
+                        placeholder='Password'
                         className='auth__input-form mb14'
                     />
                 </div>
@@ -71,6 +71,8 @@ const LoginScreen = () => {
 
                     <span className='ml10'>Facebook</span>
                 </button>
+
+                <Link to='/auth/register' className='mt10'>Don't have an account? Sign up</Link>
             </div>
 
         </>
