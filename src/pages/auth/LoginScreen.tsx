@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { authLogin, startLogin, loginWithGoogleProvider } from '../../state/actionCreators/authAction';
+import { authLogin, startLogin, loginWithGoogleProvider } from '../../reduxState/actionCreators/authAction';
 import { useForm } from '../../hooks/useForm';
 
 const LoginScreen = () => {

@@ -1,7 +1,7 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { googleProvider } from '../../firebase/firebaseConfig';
 import { Action } from '../actions';
-import { AuthActionType } from '../actionTypes';
+import { AuthActionType } from '../actionTypes/actionTypes';
 
 //TODO: remeber use this for typescript and read documentation -> ThunkAction<void, any, unknown, any>
 
@@ -43,15 +43,15 @@ const loginWithGoogleProvider = () => {
 
 const authLogin = (payload: { uid: string, displayName: string }): Action => (
     {
-        type: AuthActionType.LOGIN,
+        type: AuthActionType.LOG_IN,
         payload,
     }
 );
 
 const authLogout = (): Action => (
     {
-        type: AuthActionType.LOGOUT,
+        type: AuthActionType.LOG_OUT,
     }
-)
+);
 
 export { authLogin, authLogout, startLogin, loginWithGoogleProvider };
