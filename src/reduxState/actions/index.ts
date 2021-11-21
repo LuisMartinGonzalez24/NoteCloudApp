@@ -12,7 +12,12 @@ type LogOutAction = {
     type: AuthActionType.LOG_OUT;
 }
 
-type UIAction = {
+type UILoadingAction = {
+    type: UIActionType.UI_SET_LOADING,
+    payload: boolean,
+}
+
+type UIErrorAction = {
     type: UIActionType.UI_SET_ERROR | UIActionType.UI_REMOVE_ERROR,
     payload: {
         isError: boolean;
@@ -20,4 +25,4 @@ type UIAction = {
     }
 }
 
-export type Action = LogInAction | LogOutAction | UIAction;
+export type Action = LogInAction | LogOutAction | UILoadingAction | UIErrorAction;

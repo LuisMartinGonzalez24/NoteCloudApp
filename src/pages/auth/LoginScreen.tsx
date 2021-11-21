@@ -1,12 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { authLogin, startLogin, loginWithGoogleProvider } from '../../reduxState/actionCreators/authAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { logInWithEmailPassword, signInWithGoogleProvider } from '../../reduxState/actionCreators/authAction';
 import { useForm } from '../../hooks/useForm';
+import { ReduxState } from '../../reduxState/reducers';
 
 const LoginScreen = () => {
 
     const dispatch = useDispatch();
+    const { isLoading } = useSelector((state: ReduxState) => state.ui)
+
     const { form, onChange } = useForm({
         email: 'nando@gmail.com',
         password: '123456'
@@ -14,12 +17,11 @@ const LoginScreen = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(form.email, form.password);
-        dispatch(startLogin(form.password, form.email));
+        dispatch(logInWithEmailPassword(form.email, form.password));
     }
 
     const hanldeGoogleLogin = () => {
-        dispatch(loginWithGoogleProvider());
+        dispatch(signInWithGoogleProvider());
     }
 
     return (
@@ -59,9 +61,10 @@ const LoginScreen = () => {
 
                 <input
                     type='submit'
-                    value='Log in'
+                    value={isLoading ? 'Loading...' : 'Log in'}
                     className=''
                     id='auth__btn-login'
+                    disabled={isLoading}
                 />
             </form>
 

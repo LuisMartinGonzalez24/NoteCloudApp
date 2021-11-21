@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Utility from '../../helpers/Utility';
 import { useForm } from '../../hooks/useForm';
+import { registerWithEmailPassword } from '../../reduxState/actionCreators/authAction';
 import { removeError, setError } from '../../reduxState/actionCreators/uiAction';
 import { ReduxState } from '../../reduxState/reducers';
 
@@ -30,7 +31,8 @@ const RegisterScreen = () => {
             return;
         }
 
-        dispatch(removeError())
+        dispatch(removeError());
+        dispatch(registerWithEmailPassword(email, password, 'Elver Galar'));
     }
 
     const isFormValid = (): boolean => {
@@ -39,7 +41,7 @@ const RegisterScreen = () => {
             return true;
 
         } else if (Utility.isPasswordValid(password, passwordConfirm) === false) {
-            dispatch(setError('Password is not valid'));
+            dispatch(setError('The password must be at least 8 characters long and match both'));
             return true;
 
         } else return false;

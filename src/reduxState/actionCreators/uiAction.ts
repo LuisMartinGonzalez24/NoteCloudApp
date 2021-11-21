@@ -1,6 +1,13 @@
 import { Action } from "../actions";
 import { UIActionType } from "../actionTypes/actionTypes";
 
+const setLoading = (isLoading: boolean): Action => (
+    {
+        type: UIActionType.UI_SET_LOADING,
+        payload: isLoading,
+    }
+);
+
 const setError = (errorMessage: string): Action => (
     {
         type: UIActionType.UI_SET_ERROR,
@@ -21,4 +28,4 @@ const removeError = (): Action => (
     }
 );
 
-export { setError, removeError };
+export { setLoading, setError, removeError };
