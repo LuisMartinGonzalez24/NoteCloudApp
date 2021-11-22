@@ -1,4 +1,5 @@
 import {
+    signOut,
     updateProfile,
     signInWithPopup,
     GoogleAuthProvider,
@@ -12,18 +13,29 @@ import { setLoading } from './uiAction';
 
 //TODO: remeber use this for typescript and read documentation -> ThunkAction<void, any, unknown, any>
 
-const authLogin = (payload: { uid: string, displayName: string }): Action => (
+const authLogIn = (payload: { uid: string, displayName: string }): Action => (
     {
         type: AuthActionType.LOG_IN,
         payload,
     }
 );
 
-const authLogout = (): Action => (
+const authLogOut = (): Action => (
     {
         type: AuthActionType.LOG_OUT,
     }
 );
+
+const signOutProvider = () => {
+    return async (dispatch: any) => {
+        try {
+            await signOut(auth);
+            dispatch(authLogOut());
+        } catch (ex) {
+            console.log(ex)
+        }        
+    }
+}
 
 const logInWithEmailPassword = (email: string, password: string,) => {
     return (dispatch: any) => {
@@ -35,7 +47,7 @@ const logInWithEmailPassword = (email: string, password: string,) => {
                 // Signed in 
                 const user = userCredential.user;
 
-                dispatch(authLogin(
+                dispatch(authLogIn(
                     {
                         uid: user.uid,
                         displayName: user.displayName!,
@@ -105,4 +117,6 @@ const signInWithGoogleProvider = () => {
 }
 
 
-export { authLogin, authLogout, logInWithEmailPassword, registerWithEmailPassword, signInWithGoogleProvider };
+export { 
+    authLogIn, authLogOut, signOutProvider, logInWithEmailPassword, registerWithEmailPassword, signInWithGoogleProvider 
+};

@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { ReduxState } from '../reduxState/reducers';
 import { auth } from '../firebase/firebaseConfig';
-import { authLogin } from '../reduxState/actionCreators/authAction';
+import { authLogIn } from '../reduxState/actionCreators/authAction';
 import AuthRouter from './AuthRouter';
 import JournalScreen from '../pages/journal/JournalScreen';
+import { PublicRoute } from './PublicRoute';
+import { ProtectedRoute } from './ProtectedRoute';
 
 const AppRouter = () => {
 
     const dispatch = useDispatch();
     const [checking, setchecking] = useState(true);
+    const { auth:{ isLoggued } } = useSelector((state: ReduxState) => state)
 
     useEffect(() => {
 
@@ -17,7 +21,7 @@ const AppRouter = () => {
             if (user) {
                 console.log(user);
 
-                dispatch(authLogin({
+                dispatch(authLogIn({
                     uid: user.uid,
                     displayName: user.displayName!,
                 }))
@@ -39,8 +43,8 @@ const AppRouter = () => {
         <BrowserRouter>
             <>
                 <Switch>
-                    <Route path='/auth' component={AuthRouter} />
-                    <Route exact path='/' component={JournalScreen} />
+                    <PublicRoute path='/auth' isLogged={isLoggued} component={AuthRouter} />
+                    <ProtectedRoute exact path='/' isLogged={isLoggued} component={JournalScreen} />
                     <Redirect to='/auth/login' />
                 </Switch>
             </>

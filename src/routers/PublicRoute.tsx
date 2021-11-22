@@ -1,11 +1,15 @@
-import React from 'react'
+import React from 'react';
+import { Redirect, Route, RouteProps } from 'react-router';
 
-const PublicRoute = () => {
-    return (
-        <div>
-            
-        </div>
-    )
-}
+type PublicRouteProps = {
+    path: string;
+    isLogged: boolean;
+} & RouteProps;
 
-export default PublicRoute;
+export const PublicRoute = ({ isLogged, path, ...restProps }: PublicRouteProps) => {
+    if (isLogged) {
+        return <Redirect to={'/'} />;
+    } else {
+        return <Route path={path} {...restProps} />;
+    }
+};

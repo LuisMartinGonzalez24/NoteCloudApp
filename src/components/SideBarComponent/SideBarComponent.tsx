@@ -1,7 +1,16 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { signOutProvider } from '../../reduxState/actionCreators/authAction';
 import JournalEntriesComponent from '../JournalEntriesComponent/JournalEntriesComponent';
 
 const SideBarComponent = () => {
+
+    const dispatch = useDispatch();
+
+    const handleLogOut = () => {
+        dispatch(signOutProvider());
+    }
+
     return (
         <div className='journal__sidebar'>
 
@@ -15,6 +24,7 @@ const SideBarComponent = () => {
                     className='journal__btn-logout'
                     type="button"
                     value="Logout"
+                    onClick={handleLogOut}
                 />
             </div>
 
