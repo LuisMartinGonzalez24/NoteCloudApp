@@ -1,0 +1,47 @@
+
+.note__main-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.note__content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+}
+
+.note__appbar {
+    align-items: center;
+    background-color: $primary;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 35px;
+}
+
+.note__input, .note__textarea {
+    border: none;
+    &:focus {
+        outline: none;
+    }
+}
+
+.note__input {
+    color: black;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.note__textarea {
+    flex: 1 1 auto;
+    font-size: 16px;
+    resize: none;
+}
+
+.note__image img {
+    box-shadow: 6px 6px rgba(0, 0, 0, 0.7);
+    height: 150px;
+    border-radius: 6px;
+}
