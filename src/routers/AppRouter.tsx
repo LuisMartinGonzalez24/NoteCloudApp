@@ -1,18 +1,53 @@
-import React from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { BrowserRouter, Switch, Redirect } from 'react-router-dom';
+import { auth } from '../firebase/firebaseConfig';
+import { authLogIn } from '../redux/actionCreators/authCreator';
 import AuthRouter from './AuthRouter';
 import JournalScreen from '../pages/journal/JournalScreen';
+import { PublicRoute } from './PublicRoute';
+import { ProtectedRoute } from './ProtectedRoute';
+import { RootState } from '../redux/store';
 
 const AppRouter = () => {
-    return (
+
+    const dispatch = useDispatch();
+    const [checking, setchecking] = useState(true);
+    const { auth:{ isLoggued } } = useSelector((state: RootState) => state)
+
+    useEffect(() => {
+
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log(user);
+
+                dispatch(authLogIn({
+                    uid: user.uid,
+                    displayName: user.displayName!,
+                }))
+            } else {
+                console.log('User is not exists');
+            }
+            setchecking(false);
+        })
+
+        return () => {
+            unsubscribe();
+        }
+
+    }, [ dispatch ]);
+
+    return checking ? (
+        <h1>LOADING...</h1>
+    ) : (
         <BrowserRouter>
-            <div>
+            <>
                 <Switch>
-                    <Route path='/auth' component={AuthRouter}/>
-                    <Route exact path='/' component={JournalScreen}/>
-                    <Redirect to='/auth/login'/>
+                    <PublicRoute path='/auth' isLogged={isLoggued} component={AuthRouter} />
+                    <ProtectedRoute exact path='/' isLogged={isLoggued} component={JournalScreen} />
+                    <Redirect to='/auth/login' />
                 </Switch>
-            </div>
+            </>
         </BrowserRouter>
     )
 }

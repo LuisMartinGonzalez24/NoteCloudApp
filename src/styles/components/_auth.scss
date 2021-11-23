@@ -1,0 +1,137 @@
+@import '../mixins/button';
+
+.auth__main {
+    background-color: $white;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+.auth__column-1 {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.auth__column-2 {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    .auth__form-contaniner {
+        background-color: white;
+        box-shadow: 0 10px 15px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        width: 50%;
+    }
+}
+
+.auth__title-login {
+    text-align: center;
+}
+
+.auth__input-form {
+    height: 35PX;
+    padding-left: 10px;
+}
+
+.auth__container-input-1 {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth__container-input-2 {
+    display: flex;
+    flex-direction: column;
+    
+    div {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+
+        a {
+            text-decoration: none;
+        }
+    }
+}
+
+.auth__title-login-socials {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    
+    .auth__line-span {
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.5);
+        width: 8rem;
+    }
+}
+
+#auth__span-title {
+    opacity: 0.5;
+}
+
+#auth__btn-login {
+    width: 100%;
+    cursor: pointer;
+    border: none;
+    font-size: large;  
+    transition: .4s ease all;  
+
+    &:hover {
+        background-color: #0F52BA;
+    }
+
+    @include generalButton(#2e86de, white)
+}
+
+.auth__singin-social {
+    display: flex;
+    flex-direction: column;
+    
+    .btn-google {
+        align-items: center;
+        border-color: #2d3436;
+        border-width: 1px;
+        display: flex;
+        font-size: large;
+        justify-content: center;
+        transition: .4s ease all;
+
+        &:hover {
+            border-color: transparent;
+            background-color: #2d3436;
+            color: white;  
+        }
+
+        @include generalButton(white);
+    };
+    
+    .btn-facebook {
+        align-items: center;
+        border-color: rgba(9,121,195,1);
+        border-width: 1px;
+        display: flex;
+        font-size: large;
+        justify-content: center;
+        transition: .4s ease all;
+
+        svg {
+            color: rgba(9,121,195,1);
+        }
+
+        &:hover {
+            border-color: transparent;
+            background-color: rgba(9,121,195,1);;
+            color: white;
+            
+            svg {
+                color: white
+            }
+        }
+
+        @include generalButton(white);
+    };
+}

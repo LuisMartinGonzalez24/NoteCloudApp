@@ -1,9 +1,19 @@
 import React from 'react'
+import NoteComponent from '../../components/NoteComponent/NoteComponent';
+import NothingSelectedComponent from '../../components/NothingSelectedComponent/NothingSelectedComponent';
+import SideBarComponent from '../../components/SideBarComponent/SideBarComponent';
 
 const JournalScreen = () => {
     return (
-        <div>
-            <h1>Journal Screen</h1>
+        <div className='journal__main-content'>
+
+            <SideBarComponent />
+
+            <main>
+                {/* <NothingSelectedComponent /> */}
+                <NoteComponent/>
+            </main>
+
         </div>
     )
 }

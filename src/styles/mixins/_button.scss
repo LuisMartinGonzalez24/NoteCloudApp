@@ -1,0 +1,8 @@
+@mixin generalButton ($backgroundColor, $textColor: black) {
+    background-color: $backgroundColor;    
+    color: $textColor;
+    cursor: pointer;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+}
