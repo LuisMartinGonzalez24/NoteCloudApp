@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { ReduxState } from '../reduxState/reducers';
+import { BrowserRouter, Switch, Redirect } from 'react-router-dom';
 import { auth } from '../firebase/firebaseConfig';
-import { authLogIn } from '../reduxState/actionCreators/authAction';
+import { authLogIn } from '../redux/actionCreators/authCreator';
 import AuthRouter from './AuthRouter';
 import JournalScreen from '../pages/journal/JournalScreen';
 import { PublicRoute } from './PublicRoute';
 import { ProtectedRoute } from './ProtectedRoute';
+import { RootState } from '../redux/store';
 
 const AppRouter = () => {
 
     const dispatch = useDispatch();
     const [checking, setchecking] = useState(true);
-    const { auth:{ isLoggued } } = useSelector((state: ReduxState) => state)
+    const { auth:{ isLoggued } } = useSelector((state: RootState) => state)
 
     useEffect(() => {
 

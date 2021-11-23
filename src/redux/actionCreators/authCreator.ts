@@ -6,12 +6,11 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword
 } from 'firebase/auth';
+import { Dispatch } from "redux"
 import { auth, googleProvider } from '../../firebase/firebaseConfig';
 import { Action } from '../actions';
 import { AuthActionType } from '../actionTypes/actionTypes';
-import { setLoading } from './uiAction';
-
-//TODO: remeber use this for typescript and read documentation -> ThunkAction<void, any, unknown, any>
+import { setLoading } from './uiCreator';
 
 const authLogIn = (payload: { uid: string, displayName: string }): Action => (
     {
@@ -27,7 +26,7 @@ const authLogOut = (): Action => (
 );
 
 const signOutProvider = () => {
-    return async (dispatch: any) => {
+    return async (dispatch: Dispatch<Action>) => {
         try {
             await signOut(auth);
             dispatch(authLogOut());
@@ -38,7 +37,7 @@ const signOutProvider = () => {
 }
 
 const logInWithEmailPassword = (email: string, password: string,) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<Action>) => {
 
         dispatch(setLoading(true))
 
@@ -67,7 +66,7 @@ const logInWithEmailPassword = (email: string, password: string,) => {
 }
 
 const registerWithEmailPassword = (email: string, password: string, name: string) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<Action>) => {
         createUserWithEmailAndPassword(auth, email, password)
             .then(async (userCredential) => {
                 // Signed in 
@@ -91,7 +90,7 @@ const registerWithEmailPassword = (email: string, password: string, name: string
 }
 
 const signInWithGoogleProvider = () => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<Action>) => {
         signInWithPopup(auth, googleProvider)
             .then((result) => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
