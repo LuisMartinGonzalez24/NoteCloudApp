@@ -1,14 +1,21 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signOutProvider } from '../../redux/actionCreators/authCreator';
+import { addNewNote } from '../../redux/actionCreators/noteCreator';
+import { RootState } from '../../redux/store';
 import JournalEntriesComponent from '../JournalEntriesComponent/JournalEntriesComponent';
 
 const SideBarComponent = () => {
 
     const dispatch = useDispatch();
+    const { name } = useSelector((state: RootState) => state.auth);
 
     const handleLogOut = () => {
         dispatch(signOutProvider());
+    }
+
+    const handleNewNote = () => {
+        dispatch(addNewNote());
     }
 
     return (
@@ -17,7 +24,7 @@ const SideBarComponent = () => {
             <div className='journal__sidebar-navbar mt10 pl10 pr10'>
                 <h3>
                     <i className="ri-moon-fill ri-xl"></i>
-                    <span className='pl12'>Luis Gonzalez</span>
+                    <span className='pl12'>{name}</span>
                 </h3>
 
                 <input
@@ -28,7 +35,10 @@ const SideBarComponent = () => {
                 />
             </div>
 
-            <div className='journal__add-new-entry mt24'>
+            <div
+                onClick={handleNewNote}
+                className='journal__add-new-entry mt24'
+            >
                 <i className="ri-calendar-todo-fill ri-8x"></i>
                 <span>Add new entry</span>
             </div>
