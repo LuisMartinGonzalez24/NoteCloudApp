@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Utility from '../../helpers/Utility';
 import { useForm } from '../../hooks/useForm';
-import { registerWithEmailPassword } from '../../reduxState/actionCreators/authAction';
-import { removeError, setError } from '../../reduxState/actionCreators/uiAction';
-import { ReduxState } from '../../reduxState/reducers';
+import { registerWithEmailPassword } from '../../redux/actionCreators/authCreator';
+import { removeError, setError } from '../../redux/actionCreators/uiCreator';
+import { RootState } from '../../redux/store';
 
 const RegisterScreen = () => {
 
     const dispatch = useDispatch();
-    const { ui } = useSelector((state: ReduxState) => state);
+    const { ui } = useSelector((state: RootState) => state);
 
     const { form, onChange } = useForm({
         firstName: '',

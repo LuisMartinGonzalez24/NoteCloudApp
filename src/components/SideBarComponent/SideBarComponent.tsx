@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { signOutProvider } from '../../reduxState/actionCreators/authAction';
+import { signOutProvider } from '../../redux/actionCreators/authCreator';
 import JournalEntriesComponent from '../JournalEntriesComponent/JournalEntriesComponent';
 
 const SideBarComponent = () => {

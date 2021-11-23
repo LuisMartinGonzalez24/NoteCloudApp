@@ -7,6 +7,4 @@ const reducers = combineReducers ({
     ui: uiReducer
 });
 
-export type ReduxState = ReturnType<typeof reducers>;
-
 export {reducers};

@@ -1,14 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logInWithEmailPassword, signInWithGoogleProvider } from '../../reduxState/actionCreators/authAction';
+import { logInWithEmailPassword, signInWithGoogleProvider } from '../../redux/actionCreators/authCreator';
 import { useForm } from '../../hooks/useForm';
-import { ReduxState } from '../../reduxState/reducers';
+import { RootState } from '../../redux/store';
 
 const LoginScreen = () => {
 
     const dispatch = useDispatch();
-    const { isLoading } = useSelector((state: ReduxState) => state.ui)
+    const { isLoading } = useSelector((state: RootState) => state.ui);
 
     const { form, onChange } = useForm({
         email: 'nando@gmail.com',
