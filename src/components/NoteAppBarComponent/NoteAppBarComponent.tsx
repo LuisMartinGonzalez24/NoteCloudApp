@@ -1,6 +1,15 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { saveNote } from '../../redux/actionCreators/noteCreator';
 
 const NoteAppBarComponent = () => {
+
+    const dispatch = useDispatch();
+
+    const handleSaveNote = () => {
+        dispatch(saveNote());
+    }
+
     return (
         <div className='note__appbar'>
             <div>
@@ -9,7 +18,7 @@ const NoteAppBarComponent = () => {
 
             <div>
                 <button>Pictre</button>
-                <button>Save</button>
+                <button onClick={handleSaveNote} >Save</button>
             </div>
         </div>
     )

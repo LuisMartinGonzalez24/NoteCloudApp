@@ -17,11 +17,11 @@ const initialState: NoteState = {
         title: '',
         body: '',
         imageURL: '',
-        date: new Date(Date.now()).toLocaleString(),
+        date: '',
     },
 };
 
-export const noteReducer = (state = {} as NoteState, action: Action): NoteState => {
+export const noteReducer = (state = initialState, action: Action): NoteState => {
     switch (action.type) {
         case NoteActionType.SAVE_NOTE:
             return {

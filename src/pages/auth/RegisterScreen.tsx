@@ -12,7 +12,7 @@ const RegisterScreen = () => {
     const dispatch = useDispatch();
     const { ui } = useSelector((state: RootState) => state);
 
-    const { form, onChange } = useForm({
+    const { formValues, onChangeForm } = useForm({
         firstName: '',
         lastName: '',
         email: 'elvergalar@gmail.com',
@@ -22,7 +22,7 @@ const RegisterScreen = () => {
 
     console.log(ui.isError)
 
-    const { email, password, passwordConfirm } = form;
+    const { email, password, passwordConfirm } = formValues;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -64,7 +64,7 @@ const RegisterScreen = () => {
                         value={email}
                         placeholder='Email address'
                         className='auth__input-form mb14'
-                        onChange={e => onChange('email', e.target.value)}
+                        onChange={e => onChangeForm('email', e.target.value)}
                     />
                 </div>
 
@@ -78,7 +78,7 @@ const RegisterScreen = () => {
                         value={password}
                         placeholder='Password'
                         className='auth__input-form mb14'
-                        onChange={e => onChange('password', e.target.value)}
+                        onChange={e => onChangeForm('password', e.target.value)}
                     />
                 </div>
 
@@ -91,7 +91,7 @@ const RegisterScreen = () => {
                         value={passwordConfirm}
                         placeholder='Confirm password'
                         className='auth__input-form mb14'
-                        onChange={e => onChange('passwordConfirm', e.target.value)}
+                        onChange={e => onChangeForm('passwordConfirm', e.target.value)}
                     />
                 </div>
 

@@ -8,9 +8,14 @@ export type Note = {
     date: string,
 }
 
+type LoadNotes = {
+    type: NoteActionType.LOAD_NOTES,
+    payload: Note [],
+}
+
 type SaveNote = {
-    type: NoteActionType.SAVE_NOTE,
     payload: Note
+    type: NoteActionType.SAVE_NOTE,
 }
 
 type SetActiveNote = {
@@ -18,9 +23,4 @@ type SetActiveNote = {
     payload: Note,
 }
 
-type LoadNotes = {
-    type: NoteActionType.LOAD_NOTES,
-    payload: Note [],
-}
-
-export type NoteAction = SaveNote | SetActiveNote | LoadNotes;
+export type NoteAction = LoadNotes | SaveNote | SetActiveNote;

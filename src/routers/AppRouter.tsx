@@ -8,16 +8,15 @@ import JournalScreen from '../pages/journal/JournalScreen';
 import { PublicRoute } from './PublicRoute';
 import { ProtectedRoute } from './ProtectedRoute';
 import { RootState } from '../redux/store';
-import { loadNotes } from '../helpers/loadNotes';
+import { loadNotes } from '../redux/actionCreators/noteCreator';
 
 const AppRouter = () => {
 
     const dispatch = useDispatch();
     const [checking, setchecking] = useState(true);
-    const { auth:{ isLoggued } } = useSelector((state: RootState) => state)
-
+    const { auth:{ isLoggued } } = useSelector((state: RootState) => state);
+    
     useEffect(() => {
-
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
                 console.log(user);
@@ -27,7 +26,7 @@ const AppRouter = () => {
                     displayName: user.displayName!,
                 }));
 
-                loadNotes(user.uid);
+                dispatch(loadNotes(user.uid));
             } else {
                 console.log('User is not exists');
             }

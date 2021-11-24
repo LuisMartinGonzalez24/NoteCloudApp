@@ -10,14 +10,14 @@ const LoginScreen = () => {
     const dispatch = useDispatch();
     const { isLoading } = useSelector((state: RootState) => state.ui);
 
-    const { form, onChange } = useForm({
+    const { formValues, onChangeForm } = useForm({
         email: 'nando@gmail.com',
         password: '123456'
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(logInWithEmailPassword(form.email, form.password));
+        dispatch(logInWithEmailPassword(formValues.email, formValues.password));
     }
 
     const hanldeGoogleLogin = () => {
@@ -40,8 +40,8 @@ const LoginScreen = () => {
                         type='text'
                         placeholder='Email address'
                         className='auth__input-form mb14'
-                        value={form.email}
-                        onChange={e => onChange('email', e.target.value)}
+                        value={formValues.email}
+                        onChange={e => onChangeForm('email', e.target.value)}
                     />
                 </div>
 
@@ -54,8 +54,8 @@ const LoginScreen = () => {
                         type='text'
                         placeholder='Password'
                         className='auth__input-form mb14'
-                        value={form.password}
-                        onChange={e => onChange('password', e.target.value)}
+                        value={formValues.password}
+                        onChange={e => onChangeForm('password', e.target.value)}
                     />
                 </div>
 

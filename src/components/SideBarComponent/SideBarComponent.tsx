@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { signOutProvider } from '../../redux/actionCreators/authCreator';
 import { addNewNote } from '../../redux/actionCreators/noteCreator';
 import { RootState } from '../../redux/store';
-import JournalEntriesComponent from '../JournalEntriesComponent/JournalEntriesComponent';
+import JournalEntriesComponent from '../NoteListComponent/NoteListComponent';
 
 const SideBarComponent = () => {
 
