@@ -40,7 +40,7 @@ const SideBarComponent = () => {
                 className='journal__add-new-entry mt24'
             >
                 <i className="ri-calendar-todo-fill ri-8x"></i>
-                <span>Add new entry</span>
+                <span>Add new note</span>
             </div>
 
             <JournalEntriesComponent />

@@ -3,9 +3,18 @@ import { db } from "../../firebase/firebaseConfig";
 import { Dispatch } from "redux";
 import { Action } from "../actions";
 import { RootState } from "../store";
+import { Note } from "../actions/noteAction";
+import { NoteActionType } from "../actionTypes/actionTypes";
 
-const noteCloudCollection = 'noteCloud';
 const notesCollection = 'notes';
+const myNotesCollection = 'myNotes';
+
+const setActiveNote = (payload: Note): Action => (
+    {
+        type: NoteActionType.SAVE_NOTE,
+        payload,
+    }
+)
 
 const addNewNote = () => {
     return async (dispatch: Dispatch<Action>, getState: any) => {
@@ -13,14 +22,20 @@ const addNewNote = () => {
 
         try {
 
-            // const docRef = doc(db, notesCollection, auth.uid, 'myNotes', 'note');
+            const docData: Note = {
+                id: '',
+                title: '',
+                body: '',
+                imageURL: '',
+                date: new Date(Date.now()).toLocaleString(),
+            }
 
-            const docRef = await addDoc(collection(db, auth.uid, noteCloudCollection, notesCollection), {
-                title: 'Un nuevo dia 2',
-                body: 'Tengo mucha hambre manito. dame algo de comer pleasseee, quiero un chocolate',
-                date: new Date().getTime(),
-            });
+            const docRef = await addDoc(collection(db, notesCollection, auth.uid, myNotesCollection), docData);
             
+            dispatch(setActiveNote({
+                ...docData,
+                id: docRef.id,
+            }))
 
         } catch (ex) {
             console.log(ex)

@@ -1,16 +1,12 @@
 import { Action } from "../actions";
+import { Note } from "../actions/noteAction";
 import { NoteActionType } from "../actionTypes/actionTypes";
 
+
 interface NoteState {
-    notes: [],
+    notes: Note[],
     isNoteSelected: boolean,
-    activeNote: {
-        id: string,
-        title: string,
-        body: string,
-        imageURL: string,
-        date: string,
-    },
+    activeNote: Note,
 }
 
 const initialState: NoteState = {
@@ -21,13 +17,18 @@ const initialState: NoteState = {
         title: '',
         body: '',
         imageURL: '',
-        date: '',
+        date: new Date(Date.now()).toLocaleString(),
     },
 };
 
-export const noteReducer = (state = {} as NoteState, action: Action ): NoteState => {
+export const noteReducer = (state = {} as NoteState, action: Action): NoteState => {
     switch (action.type) {
-        case NoteActionType.NEW_NOTE:            
+        case NoteActionType.SAVE_NOTE:
+            return {
+                ...state,
+            };
+
+        case NoteActionType.SET_ACTIVE_NOTE:
             return {
                 ...state,
                 isNoteSelected: true,
@@ -35,7 +36,13 @@ export const noteReducer = (state = {} as NoteState, action: Action ): NoteState
                     ...action.payload
                 }
             };
-    
+
+        case NoteActionType.LOAD_NOTES:
+            return {
+                ...state,
+                notes: action.payload,
+            }
+
         default:
             return state;
     }

@@ -8,6 +8,7 @@ import JournalScreen from '../pages/journal/JournalScreen';
 import { PublicRoute } from './PublicRoute';
 import { ProtectedRoute } from './ProtectedRoute';
 import { RootState } from '../redux/store';
+import { loadNotes } from '../helpers/loadNotes';
 
 const AppRouter = () => {
 
@@ -24,7 +25,9 @@ const AppRouter = () => {
                 dispatch(authLogIn({
                     uid: user.uid,
                     displayName: user.displayName!,
-                }))
+                }));
+
+                loadNotes(user.uid);
             } else {
                 console.log('User is not exists');
             }

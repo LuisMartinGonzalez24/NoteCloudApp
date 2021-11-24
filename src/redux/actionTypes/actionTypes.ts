@@ -11,7 +11,7 @@ export enum UIActionType {
 }
 
 export enum NoteActionType {
-    NEW_NOTE = '[Note] New Note',
+    SAVE_NOTE = '[Note] Save Note',
     DELETE_NOTE = '[Note] Delete Note',
     UPDATE_NOTE = '[Note] Update Note',
     LOAD_NOTES = '[Note] Load Notes',
