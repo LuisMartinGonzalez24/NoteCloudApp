@@ -6,6 +6,7 @@ import { RootState } from "../store";
 import { Note } from "../actions/noteAction";
 import { NoteActionType } from "../actionTypes/actionTypes";
 import { loadNotesFromFirebase } from "../../helpers/loadNotes";
+import { errorNotify, promiseNotify, successNotify } from "../../helpers/alerts";
 
 const notesCollection = 'notes';
 const myNotesCollection = 'myNotes';
@@ -27,15 +28,27 @@ const loadNotes = (uid: string) => {
 };
 
 const saveNote = () => {
-    return async (dispatch: Dispatch<Action>, getState: any) => {
+    return (dispatch: Dispatch<Action>, getState: any) => {
         const { auth, notes: { activeNote } } = getState() as RootState; //* For the future, this is not right way, remember it. Read the oficial documentation.
 
         const noteRef = doc(db, notesCollection, auth.uid, myNotesCollection, activeNote.id);
-        await setDoc(noteRef, { ...activeNote }, { merge: true });
+        promiseNotify(
+            setDoc(noteRef, { ...activeNote }, { merge: true }),
+            'Saving note...',
+            'Note saved',
+            'Error saving note'
+        )
 
-        console.log('Note saved');
+        dispatch(updateNote(activeNote));
     }
 }
+
+const updateNote = (payload: Note): Action => (
+    {
+        type: NoteActionType.UPDATE_NOTE,
+        payload,
+    }
+)
 
 const setNotesToState = (notes: Note[]): Action => (
     {

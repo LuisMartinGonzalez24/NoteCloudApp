@@ -23,9 +23,10 @@ const initialState: NoteState = {
 
 export const noteReducer = (state = initialState, action: Action): NoteState => {
     switch (action.type) {
-        case NoteActionType.SAVE_NOTE:
+        case NoteActionType.UPDATE_NOTE:
             return {
                 ...state,
+                notes: state.notes.map(note => note.id === action.payload.id ? action.payload : note),
             };
 
         case NoteActionType.SET_ACTIVE_NOTE:

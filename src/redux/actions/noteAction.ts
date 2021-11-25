@@ -13,9 +13,9 @@ type LoadNotes = {
     payload: Note [],
 }
 
-type SaveNote = {
+type UpdateNote = {
+    type: NoteActionType.UPDATE_NOTE,
     payload: Note
-    type: NoteActionType.SAVE_NOTE,
 }
 
 type SetActiveNote = {
@@ -23,4 +23,4 @@ type SetActiveNote = {
     payload: Note,
 }
 
-export type NoteAction = LoadNotes | SaveNote | SetActiveNote;
+export type NoteAction = LoadNotes | UpdateNote | SetActiveNote;
