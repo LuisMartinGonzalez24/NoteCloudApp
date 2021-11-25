@@ -85,4 +85,4 @@ const addNewNote = () => {
     }
 }
 
-export { setActiveNote, saveNote, loadNotes, addNewNote, setNotesToState };
+export { setActiveNote, saveNote, loadNotes, addNewNote, setNotesToState, updateNote };

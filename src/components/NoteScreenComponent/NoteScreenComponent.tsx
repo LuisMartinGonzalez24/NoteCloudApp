@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
-import { setActiveNote } from '../../redux/actionCreators/noteCreator';
+import { setActiveNote, updateNote } from '../../redux/actionCreators/noteCreator';
 import { RootState } from '../../redux/store';
 import NoteAppBarComponent from '../NoteAppBarComponent/NoteAppBarComponent';
 
@@ -12,18 +12,25 @@ const NoteScreenComponent = () => {
     const { formValues, onChangeForm, resetForm } = useForm(activeNote);
 
     const { title, body, imageURL } = formValues;
-    const activeNoteIdRef = useRef<string>(activeNote.id);
+    const activeNoteChangeRef = useRef(activeNote);
 
     useEffect(() => {
-        if (activeNote.id !== activeNoteIdRef.current) {
+        if (activeNote.id !== activeNoteChangeRef.current.id) {
+            activeNoteChangeRef.current = activeNote;
             resetForm(activeNote);
-            activeNoteIdRef.current = activeNote.id;
         }
+
     }, [activeNote, resetForm])
 
     useEffect(() => {
-        dispatch(setActiveNote(formValues))
-    }, [dispatch, formValues])
+
+        if (activeNote.id === activeNoteChangeRef.current.id) {
+            dispatch(updateNote(formValues));
+        }
+
+    }, [dispatch, formValues, activeNote])
+
+
 
     return (
         <div className='note__main-content'>
