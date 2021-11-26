@@ -1,4 +1,4 @@
-import { doc, setDoc, addDoc, collection } from "@firebase/firestore";
+import { doc, setDoc, addDoc, deleteDoc, collection } from "@firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { Dispatch } from "redux";
 import { Action } from "../actions";
@@ -41,6 +41,25 @@ const saveNote = () => {
         )
 
         dispatch(updateNote(activeNote));
+    }
+}
+
+const deleteNote = () => {
+    return (dispatch: Dispatch<Action>, getState: any) => {
+        const { auth, notes: { activeNote } } = getState() as RootState;
+
+        const noteRef = doc(db, notesCollection, auth.uid, myNotesCollection, activeNote.id);
+        promiseNotify(
+            deleteDoc(noteRef),
+            'Deleting note...',
+            'Note deleted',
+            'Error deleting note'
+        )
+
+        dispatch({
+            type: NoteActionType.DELETE_NOTE,
+            payload: activeNote.id,
+        });
     }
 }
 
@@ -106,4 +125,4 @@ const uploadPicture = (file: File) => {
     }
 }
 
-export { setActiveNote, saveNote, loadNotes, addNewNote, setNotesToState, updateNote, uploadPicture };
+export { setActiveNote, saveNote, deleteNote, loadNotes, addNewNote, setNotesToState, updateNote, uploadPicture };

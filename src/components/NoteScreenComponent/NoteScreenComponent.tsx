@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
-import { setActiveNote, updateNote } from '../../redux/actionCreators/noteCreator';
+import { deleteNote, setActiveNote, updateNote } from '../../redux/actionCreators/noteCreator';
 import { RootState } from '../../redux/store';
 import NoteAppBarComponent from '../NoteAppBarComponent/NoteAppBarComponent';
 
@@ -28,7 +28,9 @@ const NoteScreenComponent = () => {
 
     }, [dispatch, formValues])
 
-
+    const handleDeleteNote = () => {
+        dispatch(deleteNote());
+    }
 
     return (
         <div className='note__main-content'>
@@ -61,7 +63,12 @@ const NoteScreenComponent = () => {
                         <img src={activeNote.imageURL} alt="img preview" />
                     </div>
                 )}
+
             </div>
+
+            <button onClick={handleDeleteNote}>
+                Delete Note
+            </button>
         </div>
     )
 }

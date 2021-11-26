@@ -18,9 +18,14 @@ type UpdateNote = {
     payload: Note
 }
 
+type DeleteNote = {
+    type: NoteActionType.DELETE_NOTE,
+    payload: string
+}
+
 type SetActiveNote = {
     type: NoteActionType.SET_ACTIVE_NOTE,
     payload: Note,
 }
 
-export type NoteAction = LoadNotes | UpdateNote | SetActiveNote;
+export type NoteAction = LoadNotes | UpdateNote | DeleteNote | SetActiveNote;
