@@ -6,7 +6,8 @@ import { RootState } from "../store";
 import { Note } from "../actions/noteAction";
 import { NoteActionType } from "../actionTypes/actionTypes";
 import { loadNotesFromFirebase } from "../../helpers/loadNotes";
-import { errorNotify, promiseNotify, successNotify } from "../../helpers/alerts";
+import { dimissNotify, errorNotify, loadingNotify, promiseNotify, successNotify } from "../../helpers/alerts";
+import { uploadFile } from "../../helpers/uploadFIle";
 
 const notesCollection = 'notes';
 const myNotesCollection = 'myNotes';
@@ -85,4 +86,24 @@ const addNewNote = () => {
     }
 }
 
-export { setActiveNote, saveNote, loadNotes, addNewNote, setNotesToState, updateNote };
+const uploadPicture = (file: File) => {
+    return async (dispatch: Dispatch<Action>, getState: any) => {
+        const { notes: { activeNote } } = getState() as RootState;
+        const toastId = loadingNotify('Uploading picture...');
+        const pictureUrl = await uploadFile(file)
+        dimissNotify(toastId);
+        
+        if (pictureUrl) {
+            successNotify('Picture saved');
+            
+            dispatch(updateNote({
+                ...activeNote,
+                imageURL: pictureUrl,
+            }))
+        } else {
+            errorNotify('Error Uploading picture')
+        }
+    }
+}
+
+export { setActiveNote, saveNote, loadNotes, addNewNote, setNotesToState, updateNote, uploadPicture };

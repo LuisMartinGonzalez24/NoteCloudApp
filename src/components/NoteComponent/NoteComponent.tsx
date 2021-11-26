@@ -23,7 +23,7 @@ const NoteComponent = ({ note }: NoteComponentProps) => {
             {(imageURL && imageURL.length > 0) && (
                 <div className='journal__entry-picture' style={{
                     backgroundSize: 'cover',
-                    backgroundImage: 'url(https://www.gettyimages.es/gi-resources/images/500px/983794168.jpg)'
+                    backgroundImage: `url(${imageURL})`
                 }}></div>
             )}
 

@@ -11,7 +11,7 @@ const NoteScreenComponent = () => {
     const { activeNote } = useSelector((state: RootState) => state.notes)
     const { formValues, onChangeForm, resetForm } = useForm(activeNote);
 
-    const { title, body, imageURL } = formValues;
+    const { title, body } = formValues;
     const activeNoteChangeRef = useRef(activeNote);
 
     useEffect(() => {
@@ -24,11 +24,9 @@ const NoteScreenComponent = () => {
 
     useEffect(() => {
 
-        if (activeNote.id === activeNoteChangeRef.current.id) {
-            dispatch(updateNote(formValues));
-        }
+        dispatch(updateNote(formValues));
 
-    }, [dispatch, formValues, activeNote])
+    }, [dispatch, formValues])
 
 
 
@@ -58,9 +56,9 @@ const NoteScreenComponent = () => {
                     onChange={e => onChangeForm('body', e.target.value)}
                 ></textarea>
 
-                {(imageURL && imageURL.length > 0) && (
+                {(activeNote.imageURL && activeNote.imageURL.length > 0) && (
                     <div className='note__image'>
-                        <img src="https://cdn.pixabay.com/photo/2013/07/18/15/01/beach-164288_960_720.jpg" alt="img preview" />
+                        <img src={activeNote.imageURL} alt="img preview" />
                     </div>
                 )}
             </div>
