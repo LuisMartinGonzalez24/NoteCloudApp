@@ -9,7 +9,7 @@ import {
 import { Dispatch } from "redux"
 import { auth, googleProvider } from '../../firebase/firebaseConfig';
 import { Action } from '../actions';
-import { AuthActionType } from '../actionTypes/actionTypes';
+import { AuthActionType, NoteActionType } from '../actionTypes/actionTypes';
 import { setLoading } from './uiCreator';
 
 const authLogIn = (payload: { uid: string, displayName: string }): Action => (
@@ -30,6 +30,9 @@ const signOutProvider = () => {
         try {
             await signOut(auth);
             dispatch(authLogOut());
+            dispatch({
+                type: NoteActionType.CLEAN_NOTES,
+            })
         } catch (ex) {
             console.log(ex)
         }        

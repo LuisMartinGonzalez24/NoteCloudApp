@@ -33,7 +33,7 @@ export const noteReducer = (state = initialState, action: Action): NoteState => 
         case NoteActionType.DELETE_NOTE:
             return {
                 ...state,
-                notes: state.notes.filter(note => note.id !== action.payload && note),                
+                notes: state.notes.filter(note => note.id !== action.payload && note),
             };
 
         case NoteActionType.SET_ACTIVE_NOTE:
@@ -50,6 +50,9 @@ export const noteReducer = (state = initialState, action: Action): NoteState => 
                 ...state,
                 notes: action.payload,
             }
+
+        case NoteActionType.CLEAN_NOTES:
+            return initialState;
 
         default:
             return state;

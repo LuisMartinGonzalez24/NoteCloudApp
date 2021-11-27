@@ -28,4 +28,8 @@ type SetActiveNote = {
     payload: Note,
 }
 
-export type NoteAction = LoadNotes | UpdateNote | DeleteNote | SetActiveNote;
+type PurgeNotesState = {
+    type: NoteActionType.CLEAN_NOTES,    
+}
+
+export type NoteAction = LoadNotes | UpdateNote | DeleteNote | SetActiveNote | PurgeNotesState;
