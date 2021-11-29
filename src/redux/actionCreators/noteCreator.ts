@@ -1,4 +1,5 @@
 import { doc, setDoc, addDoc, deleteDoc, collection } from "@firebase/firestore";
+import { v4 as uuidv4 } from 'uuid';
 import { db } from "../../firebase/firebaseConfig";
 import { Dispatch } from "redux";
 import { Action } from "../actions";
@@ -81,27 +82,25 @@ const addNewNote = () => {
     return async (dispatch: Dispatch<Action>, getState: any) => {
         const { auth } = getState() as RootState;
 
-        try {
+        const noteId: string = uuidv4();
 
-            const docData: Note = {
-                id: '',
-                title: '',
-                body: '',
-                imageURL: '',
-                date: new Date(Date.now()).toLocaleString(),
-            }
-
-            const docRef = await addDoc(collection(db, notesCollection, auth.uid, myNotesCollection), docData);
-
-            dispatch(setActiveNote({
-                ...docData,
-                id: docRef.id,
-            }))
-
-        } catch (ex) {
-            console.log(ex)
+        const docData: Note = {
+            id: noteId,
+            title: '',
+            body: '',
+            imageURL: '',
+            date: new Date().getTime(),
         }
 
+        dispatch({
+            type: NoteActionType.ADD_NEW_NOTE,
+            payload: docData,
+        });
+
+        dispatch(setActiveNote(docData));
+            
+        setDoc(doc(db, notesCollection, auth.uid, myNotesCollection, noteId), docData)
+        .catch(ex => console.log(ex));
     }
 }
 
@@ -111,10 +110,10 @@ const uploadPicture = (file: File) => {
         const toastId = loadingNotify('Uploading picture...');
         const pictureUrl = await uploadFile(file)
         dimissNotify(toastId);
-        
+
         if (pictureUrl) {
             successNotify('Picture saved');
-            
+
             dispatch(updateNote({
                 ...activeNote,
                 imageURL: pictureUrl,

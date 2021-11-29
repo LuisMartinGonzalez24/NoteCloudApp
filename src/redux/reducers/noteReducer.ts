@@ -17,7 +17,7 @@ const initialState: NoteState = {
         title: '',
         body: '',
         imageURL: '',
-        date: '',
+        date: null,
     },
 };
 
@@ -30,10 +30,17 @@ export const noteReducer = (state = initialState, action: Action): NoteState => 
                 activeNote: action.payload,
             };
 
+        case NoteActionType.ADD_NEW_NOTE:
+            return {
+                ...state,
+                notes: [...state.notes, action.payload],
+            };
+
         case NoteActionType.DELETE_NOTE:
             return {
                 ...state,
                 notes: state.notes.filter(note => note.id !== action.payload && note),
+                isNoteSelected: false,
             };
 
         case NoteActionType.SET_ACTIVE_NOTE:
