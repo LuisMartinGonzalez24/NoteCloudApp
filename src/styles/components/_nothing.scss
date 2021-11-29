@@ -1,8 +1,8 @@
 
 .nothing__main-content {    
     align-items: center;
-    background-color: #e63946;
-    color: white;
+    background-color: $primary;
+    color: $secondary;
     display: flex;
     flex-direction: column;
     height: 100vh;    
@@ -10,12 +10,14 @@
     width: 100%; 
 
     p {
-        font-size: xx-large;
+        font-size: 45px;
+        font-weight: 600;
         text-align: center;
     }
 
     hr {
         width: 50%;
-        margin: 14px 0;
+        margin: 14px 0;;
+        border-color: $secondary;
     }
 }

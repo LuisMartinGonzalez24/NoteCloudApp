@@ -18,8 +18,15 @@ main {
     width: 100%;
 }
 
-.pointer {
-    cursor: pointer;
+a {
+    color: $secondary;
+    font-weight: 600;
+    text-decoration: none;    
+    transition: color .3s ease;
+
+    &:hover {
+        color: darken($color: $primary, $amount: 10);
+    }
 }
 
 //*Global margins and paddings

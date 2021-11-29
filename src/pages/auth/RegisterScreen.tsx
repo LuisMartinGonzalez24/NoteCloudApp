@@ -57,9 +57,39 @@ const RegisterScreen = () => {
             {/** Login Forn*/}
             <form onSubmit={handleSubmit}>
                 {/**TODO: change name of input group */}
-                <div className='auth__container-input-1'>
-                    <label htmlFor="" className='mb8'>Email</label>
+                <div className='auth__container-name'>
+                    <div className='auth__form-group'>
+                        <label htmlFor='last-name' className='mb16'>First Name</label>
+                        <input
+                            id='name'
+                            name='name'
+                            type='text'
+                            value={email}
+                            placeholder='Email address'
+                            className='auth__input-form mb14'
+                            onChange={e => onChangeForm('email', e.target.value)}
+                        />
+                    </div>
+
+                    <div className='auth__form-group'>
+                        <label htmlFor='last-name' className='mb16'>Last Name</label>
+                        <input
+                            id='last-name'
+                            name='last-name'
+                            type='text'
+                            value={email}
+                            placeholder='Email address'
+                            className='auth__input-form mb14'
+                            onChange={e => onChangeForm('email', e.target.value)}
+                        />
+                    </div>
+                </div>
+
+                <div className='auth__form-group'>
+                    <label htmlFor="email-register" className='mb16'>Email</label>
                     <input
+                        id='email-register'
+                        name='email-register'
                         type='text'
                         value={email}
                         placeholder='Email address'
@@ -68,13 +98,12 @@ const RegisterScreen = () => {
                     />
                 </div>
 
-                <div className='auth__container-input-2'>
-                    <label htmlFor="" className='mb8'>Password</label>
-
+                <div className='auth__form-group'>
+                    <label htmlFor="" className='mb16'>Password</label>
                     <input
                         type='text'
-                        id={'password'}
-                        name={'password'}
+                        id={'password-register'}
+                        name={'password-register'}
                         value={password}
                         placeholder='Password'
                         className='auth__input-form mb14'
@@ -82,12 +111,12 @@ const RegisterScreen = () => {
                     />
                 </div>
 
-                <div className='auth__container-input-2'>
-                    <label htmlFor="" className='mb8'>Confirm Password</label>
+                <div className='auth__form-group'>
+                    <label htmlFor="password-confirm-register" className='mb16'>Confirm Password</label>
                     <input
                         type='text'
-                        id={'passwordConfirm'}
-                        name={'passwordConfirm'}
+                        id={'password-confirm-register'}
+                        name={'password-confirm-register'}
                         value={passwordConfirm}
                         placeholder='Confirm password'
                         className='auth__input-form mb14'
@@ -101,12 +130,11 @@ const RegisterScreen = () => {
                     className=''
                     id='auth__btn-login'
                 />
+
+                <div className='mt16'>
+                    <Link to='/auth/login' >Already have an account? Sign in!</Link>
+                </div>
             </form>
-
-            <span className='auth__title-login-socials'>
-                <Link to='/auth/login' className='p16' id='auth__span-title'>Already have an account? Login!h</Link>
-            </span>
-
         </>
     )
 }

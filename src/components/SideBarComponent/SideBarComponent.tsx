@@ -19,25 +19,27 @@ const SideBarComponent = () => {
     }
 
     return (
-        <div className='journal__sidebar'>
+        <div className='home__sidebar'>
 
-            <div className='journal__sidebar-navbar mt10 pl10 pr10'>
+            <div className='home__sidebar-navbar mt10 pl10 pr10'>
                 <h3>
                     <i className="ri-moon-fill ri-xl"></i>
                     <span className='pl12'>{name}</span>
                 </h3>
 
-                <input
-                    className='journal__btn-logout'
+                <button
+                    className='home__btn-logout'
                     type="button"
-                    value="Logout"
                     onClick={handleLogOut}
-                />
+                >
+                    <i className="ri-login-box-line ri-xl mr10"></i>
+                    <span>Logout</span>
+                </button>
             </div>
 
             <div
                 onClick={handleNewNote}
-                className='journal__add-new-entry mt24'
+                className='home__add-new-entry mt24'
             >
                 <i className="ri-calendar-todo-fill ri-8x"></i>
                 <span>Add new note</span>

@@ -4,7 +4,7 @@ import { BrowserRouter, Switch, Redirect } from 'react-router-dom';
 import { auth } from '../firebase/firebaseConfig';
 import { authLogIn } from '../redux/actionCreators/authCreator';
 import AuthRouter from './AuthRouter';
-import JournalScreen from '../pages/journal/JournalScreen';
+import HomeScreen from '../pages/home/HomeScreen';
 import { PublicRoute } from './PublicRoute';
 import { ProtectedRoute } from './ProtectedRoute';
 import { RootState } from '../redux/store';
@@ -46,7 +46,7 @@ const AppRouter = () => {
             <>
                 <Switch>
                     <PublicRoute path='/auth' isLogged={isLoggued} component={AuthRouter} />
-                    <ProtectedRoute exact path='/' isLogged={isLoggued} component={JournalScreen} />
+                    <ProtectedRoute exact path='/' isLogged={isLoggued} component={HomeScreen} />
                     <Redirect to='/auth/login' />
                 </Switch>
             </>

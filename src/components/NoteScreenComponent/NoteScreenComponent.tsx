@@ -66,8 +66,9 @@ const NoteScreenComponent = () => {
 
             </div>
 
-            <button onClick={handleDeleteNote}>
-                Delete Note
+            <button className='note__btn-delete' onClick={handleDeleteNote}>
+                <span>Delete Note</span>
+                <i className="ml10 ri-delete-bin-6-line ri-2x"></i>
             </button>
         </div>
     )

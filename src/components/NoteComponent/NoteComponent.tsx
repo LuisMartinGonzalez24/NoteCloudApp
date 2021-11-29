@@ -18,25 +18,25 @@ const NoteComponent = ({ note }: NoteComponentProps) => {
     }
 
     return (
-        <div className='journal__entry mb20' onClick={handleSetActiveNote}>
+        <div className='home__entry mb20' onClick={handleSetActiveNote}>
 
             {(imageURL && imageURL.length > 0) && (
-                <div className='journal__entry-picture' style={{
+                <div className='home__entry-picture' style={{
                     backgroundSize: 'cover',
                     backgroundImage: `url(${imageURL})`
                 }}></div>
             )}
 
-            <div className='journal__entry-body'>
-                <h4 className='journal__entry-title'>
+            <div className='home__entry-body'>
+                <h4 className='home__entry-title'>
                     {title}
                 </h4>
-                <p className='journal__entry-content pt4'>
+                <p className='home__entry-content pt4'>
                     {body}
                 </p>
             </div>
 
-            <div className="journal__entry-date-box">
+            <div className="home__entry-date-box">
                 <span>{dayjs(date).format('dddd')}</span>
                 <p>{dayjs(date).format('MM/DD/YYYY')}</p>
             </div>

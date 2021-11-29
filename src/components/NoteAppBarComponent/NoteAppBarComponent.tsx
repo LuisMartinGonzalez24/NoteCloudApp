@@ -47,12 +47,19 @@ const NoteAppBarComponent = () => {
             />
 
             <div>
-                <span>28 August 2020</span>
+                <span className='note__title-date'>28 August 2020</span>
             </div>
 
-            <div>
-                <button onClick={handleUploadPicture}>Pictre</button>
-                <button onClick={handleSaveNote} >Save</button>
+            <div className='note__btn-actions'>
+                <button className='note__btn-picture' onClick={handleUploadPicture}>
+                    <i className="ri-image-add-fill ri-xl"></i>
+                    <span className='ml10'>Picture</span>
+                </button>
+
+                <button className='note__btn-save' onClick={handleSaveNote} >
+                    <i className="ri-upload-cloud-2-fill ri-xl"></i>
+                    <span className='ml10'>Save</span>
+                </button>
             </div>
         </div>
     )

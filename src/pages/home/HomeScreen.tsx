@@ -1,23 +1,23 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
-import NoteComponent from '../../components/NoteScreenComponent/NoteScreenComponent';
+import NoteScreenComponent from '../../components/NoteScreenComponent/NoteScreenComponent';
 import NothingSelectedComponent from '../../components/NothingSelectedComponent/NothingSelectedComponent';
 import SideBarComponent from '../../components/SideBarComponent/SideBarComponent';
 import { RootState } from '../../redux/store';
 
-const JournalScreen = () => {
+const HomeScreen = () => {
 
     const { notes, isNoteSelected, activeNote } = useSelector((state: RootState) => state.notes);
 
     return (
-        <div className='journal__main-content'>
+        <div className='home__main-content'>
 
             <SideBarComponent />
 
             <main>
 
                 {isNoteSelected ? (
-                    <NoteComponent />
+                    <NoteScreenComponent />
                 ) : (
                     <NothingSelectedComponent />
                 )}
@@ -28,4 +28,4 @@ const JournalScreen = () => {
     )
 }
 
-export default JournalScreen;
+export default HomeScreen;
