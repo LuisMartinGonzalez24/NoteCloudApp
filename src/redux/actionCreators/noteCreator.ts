@@ -1,4 +1,4 @@
-import { doc, setDoc, addDoc, deleteDoc, collection } from "@firebase/firestore";
+import { doc, setDoc, deleteDoc } from "@firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
 import { db } from "../../firebase/firebaseConfig";
 import { Dispatch } from "redux";
@@ -40,8 +40,6 @@ const saveNote = () => {
             'Note saved',
             'Error saving note'
         )
-
-        dispatch(updateNote(activeNote));
     }
 }
 
@@ -98,7 +96,7 @@ const addNewNote = () => {
         });
 
         dispatch(setActiveNote(docData));
-            
+
         setDoc(doc(db, notesCollection, auth.uid, myNotesCollection, noteId), docData)
         .catch(ex => console.log(ex));
     }
