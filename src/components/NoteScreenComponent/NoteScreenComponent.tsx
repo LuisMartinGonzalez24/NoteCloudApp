@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { confirmationNotify } from '../../helpers/alerts';
 import { useForm } from '../../hooks/useForm';
 import { deleteNote, updateNote } from '../../redux/actionCreators/noteCreator';
 import { RootState } from '../../redux/store';
@@ -28,8 +29,14 @@ const NoteScreenComponent = () => {
 
     }, [dispatch, formValues])
 
-    const handleDeleteNote = () => {
-        dispatch(deleteNote());
+    const handleDeleteNote = async () => {
+        const result = await confirmationNotify('Do you want to delete it?', 'Yes, delete it', `I don't`);
+
+        if (result) {
+            if (result.isConfirmed) {
+                dispatch(deleteNote());
+            }
+        }
     }
 
     return (

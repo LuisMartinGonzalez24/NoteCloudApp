@@ -1,4 +1,23 @@
 import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
+
+const confirmationNotify = async (
+    title: string,
+    confirmButtonText: string,
+    denyButtonText: string,
+) => {
+    return await Swal.fire({
+        icon: 'warning',
+        title,
+        confirmButtonText,
+        confirmButtonColor: '#293250',
+        denyButtonText,
+        denyButtonColor: '#e63946',
+        showDenyButton: true,
+        focusConfirm: false,
+        allowOutsideClick: false,
+    })
+}
 
 const dimissNotify = (toastId: string) => toast.dismiss(toastId);
 
@@ -25,4 +44,4 @@ const promiseNotify = (
     });
 }
 
-export { successNotify, errorNotify, promiseNotify, loadingNotify, dimissNotify };
+export { successNotify, errorNotify, promiseNotify, loadingNotify, dimissNotify, confirmationNotify };

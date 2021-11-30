@@ -73,6 +73,10 @@ const registerWithEmailPassword = (email: string, password: string, name: string
                     displayName: name,
                 })
 
+                dispatch(authLogIn({
+                    uid: userCredential.user.uid,
+                    displayName: userCredential.user.displayName!,
+                }));
             })
             .catch((ex) => {
                 console.log('>> registerWithEmailPassword error: ', ex);

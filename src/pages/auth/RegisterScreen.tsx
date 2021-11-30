@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { errorNotify } from '../../helpers/alerts';
 import Utility from '../../helpers/Utility';
 import { useForm } from '../../hooks/useForm';
 import { registerWithEmailPassword } from '../../redux/actionCreators/authCreator';
@@ -20,28 +21,32 @@ const RegisterScreen = () => {
         passwordConfirm: '',
     });
 
-    console.log(ui.isError)
-
-    const { email, password, passwordConfirm } = formValues;
+    const { firstName, lastName, email, password, passwordConfirm } = formValues;
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
+        e.preventDefault();        
         if (isFormValid()) {
             return;
         }
 
-        dispatch(removeError());
-        dispatch(registerWithEmailPassword(email, password, 'Elver Galar'));
+        // dispatch(removeError());
+        dispatch(registerWithEmailPassword(email, password, `${firstName.trim()} ${lastName.trim()}`));
     }
 
     const isFormValid = (): boolean => {
-        if (Utility.isValidEmail(email) === false) {
-            dispatch(setError('Email is not valid'));
+        if (
+            Utility.isEmptyInput(firstName) ||
+            Utility.isEmptyInput(lastName)
+        ) {
+            errorNotify('First name/last name are not valid and must have at least 3 character');
+            return true;
+
+        } else if (Utility.isValidEmail(email) === false) {
+            errorNotify('Email is not valid');
             return true;
 
         } else if (Utility.isPasswordValid(password, passwordConfirm) === false) {
-            dispatch(setError('The password must be at least 8 characters long and match both'));
+            errorNotify('The password must be at least 8 characters long and match both');
             return true;
 
         } else return false;
@@ -64,10 +69,10 @@ const RegisterScreen = () => {
                             id='name'
                             name='name'
                             type='text'
-                            value={email}
+                            value={firstName}
                             placeholder='First Name'
                             className='auth__input-form mb14'
-                            onChange={e => onChangeForm('email', e.target.value)}
+                            onChange={e => onChangeForm('firstName', e.target.value)}
                         />
                     </div>
 
@@ -77,10 +82,10 @@ const RegisterScreen = () => {
                             id='last-name'
                             name='last-name'
                             type='text'
-                            value={email}
+                            value={lastName}
                             placeholder='Last Name'
                             className='auth__input-form mb14'
-                            onChange={e => onChangeForm('email', e.target.value)}
+                            onChange={e => onChangeForm('lastName', e.target.value)}
                         />
                     </div>
                 </div>
@@ -101,7 +106,7 @@ const RegisterScreen = () => {
                 <div className='auth__form-group'>
                     <label htmlFor="" className='mb16'>Password</label>
                     <input
-                        type='text'
+                        type='password'
                         id={'password-register'}
                         name={'password-register'}
                         value={password}
@@ -114,7 +119,7 @@ const RegisterScreen = () => {
                 <div className='auth__form-group'>
                     <label htmlFor="password-confirm-register" className='mb16'>Confirm Password</label>
                     <input
-                        type='text'
+                        type='password'
                         id={'password-confirm-register'}
                         name={'password-confirm-register'}
                         value={passwordConfirm}

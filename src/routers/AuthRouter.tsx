@@ -1,4 +1,5 @@
 import React from 'react'
+import { Toaster } from 'react-hot-toast';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import LoginScreen from '../pages/auth/LoginScreen';
 import RegisterScreen from '../pages/auth/RegisterScreen';
@@ -6,6 +7,10 @@ import RegisterScreen from '../pages/auth/RegisterScreen';
 const AuthRouter = () => {
     return (
         <div className='auth__main'>
+            <Toaster
+                position="top-right"
+                reverseOrder={false}
+            />
 
             <div className='auth__column-1'>
                 <div className='auth__logo-container'>

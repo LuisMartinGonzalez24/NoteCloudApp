@@ -1,12 +1,14 @@
 import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { Toaster } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 import { saveNote, uploadPicture } from '../../redux/actionCreators/noteCreator';
 import { errorNotify } from '../../helpers/alerts';
+import { RootState } from '../../redux/store';
 
 const NoteAppBarComponent = () => {
 
     const dispatch = useDispatch();
+    const { date } = useSelector((state: RootState) => state.notes.activeNote)
     const fileSelectorRef = useRef<HTMLInputElement>(null);
 
     const handleSaveNote = () => {
@@ -31,11 +33,6 @@ const NoteAppBarComponent = () => {
 
     return (
         <div className='note__appbar'>
-            <Toaster
-                position="top-center"
-                reverseOrder={false}
-            />
-
             <input
                 ref={fileSelectorRef}
                 type="file"
@@ -47,7 +44,7 @@ const NoteAppBarComponent = () => {
             />
 
             <div>
-                <span className='note__title-date'>28 August 2020</span>
+                <span className='note__title-date'>{dayjs(date).format('MMMM D, YYYY')}</span>
             </div>
 
             <div className='note__btn-actions'>
