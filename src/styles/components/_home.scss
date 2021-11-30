@@ -1,18 +1,18 @@
 
-.journal__main-content {
+.home__main-content {
     display: flex;
 }
 
-.journal__sidebar {
-    background-color: $dark-grey;
-    color: white;
+.home__sidebar {
+    background-color: $secondary;
+    color: $white;
     display: flex;
     flex-direction: column;
     height: 100vh;
     width: 45vw;
 }
 
-.journal__sidebar-navbar {
+.home__sidebar-navbar {
     align-items: center;
     display: flex;
     justify-content: space-between;
@@ -24,22 +24,32 @@
     }
 }
 
-.journal__btn-logout {
-    background-color: $dark-grey;
-    border-radius: 5px;
-    border-width: 0;
-    cursor: pointer;
-    color: white;
+.home__btn-logout {
+    align-items: center;
+    border-radius: 6px;
+    border: none;
+    display: flex;
     font-size: medium;
-    padding: 8px 20px;
-    transition: .4s ease all;
+    justify-content: center;
+    transition: 
+    background-color .4s ease,
+    color .4s ease;
+    
+    width: 120px;
 
-    &:hover{
-        background-color: darken($dark-grey, 5%);
+    span {
+        font-weight: 600;
     }
+    
+    &:hover {
+        background-color: $secondary;
+        color: $white;
+    }
+
+    @include generalButton($white, $secondary);
 }
 
-.journal__add-new-entry {    
+.home__add-new-entry {    
     align-self: center;
     align-items: center;
     display: flex;
@@ -54,11 +64,11 @@
     }
 }
 
-.journal__entries {
+.home__entries {
     overflow-y: auto;
 }
 
-.journal__entry {
+.home__entry {
     background-color: white;
     border-radius: 6px;
     color: $dark-grey;
@@ -70,12 +80,12 @@
     width: auto;
 }
 
-.journal__entry-picture {
+.home__entry-picture {
     height: 100px;
     width: 150px;
 }
 
-.journal__entry-body {
+.home__entry-body {
     display: flex;
     flex-direction: column;
     text-align: justify;
@@ -84,15 +94,15 @@
     padding-left: 10px;
 }
 
-.journal__entry-title {
+.home__entry-title {
     font-weight: bold;
 }
 
-.journal__entry-content {
+.home__entry-content {
     font-size: small;
 }
 
-.journal__entry-date-box {
+.home__entry-date-box {
     align-items: center;
     display: flex;
     flex-direction: column;

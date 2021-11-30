@@ -4,9 +4,10 @@
 
 //* Components
 @import './components/auth';
-@import './components/journal';
+@import './components/home';
 @import './components/note';
 @import './components/nothing';
+@import './components/loading';
 
 //* Mixins
 @import './mixins/button';
