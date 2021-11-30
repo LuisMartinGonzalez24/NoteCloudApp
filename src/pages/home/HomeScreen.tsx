@@ -7,7 +7,7 @@ import { RootState } from '../../redux/store';
 
 const HomeScreen = () => {
 
-    const { notes, isNoteSelected, activeNote } = useSelector((state: RootState) => state.notes);
+    const { isNoteSelected } = useSelector((state: RootState) => state.notes);
 
     return (
         <div className='home__main-content'>

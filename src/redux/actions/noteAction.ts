@@ -5,7 +5,7 @@ export type Note = {
     title: string,
     body: string,
     imageURL: string,
-    date: string,
+    date: number | null,
 }
 
 type LoadNotes = {
@@ -15,7 +15,12 @@ type LoadNotes = {
 
 type UpdateNote = {
     type: NoteActionType.UPDATE_NOTE,
-    payload: Note
+    payload: Note,
+}
+
+type AddNote = {
+    type: NoteActionType.ADD_NEW_NOTE,
+    payload: Note,
 }
 
 type DeleteNote = {
@@ -32,4 +37,4 @@ type PurgeNotesState = {
     type: NoteActionType.CLEAN_NOTES,    
 }
 
-export type NoteAction = LoadNotes | UpdateNote | DeleteNote | SetActiveNote | PurgeNotesState;
+export type NoteAction = LoadNotes | UpdateNote | AddNote | DeleteNote | SetActiveNote | PurgeNotesState;
