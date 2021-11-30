@@ -9,6 +9,7 @@ import { PublicRoute } from './PublicRoute';
 import { ProtectedRoute } from './ProtectedRoute';
 import { RootState } from '../redux/store';
 import { loadNotes } from '../redux/actionCreators/noteCreator';
+import LoadingComponent from '../components/LoadingComponent/LoadingComponent';
 
 const AppRouter = () => {
 
@@ -40,7 +41,7 @@ const AppRouter = () => {
     }, [ dispatch ]);
 
     return checking ? (
-        <h1>LOADING...</h1>
+        <LoadingComponent />
     ) : (
         <BrowserRouter>
             <>

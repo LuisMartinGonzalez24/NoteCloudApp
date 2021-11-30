@@ -15,9 +15,9 @@ const RegisterScreen = () => {
     const { formValues, onChangeForm } = useForm({
         firstName: '',
         lastName: '',
-        email: 'elvergalar@gmail.com',
-        password: '12345678',
-        passwordConfirm: '12345678',
+        email: '',
+        password: '',
+        passwordConfirm: '',
     });
 
     console.log(ui.isError)
@@ -65,7 +65,7 @@ const RegisterScreen = () => {
                             name='name'
                             type='text'
                             value={email}
-                            placeholder='Email address'
+                            placeholder='First Name'
                             className='auth__input-form mb14'
                             onChange={e => onChangeForm('email', e.target.value)}
                         />
@@ -78,7 +78,7 @@ const RegisterScreen = () => {
                             name='last-name'
                             type='text'
                             value={email}
-                            placeholder='Email address'
+                            placeholder='Last Name'
                             className='auth__input-form mb14'
                             onChange={e => onChangeForm('email', e.target.value)}
                         />

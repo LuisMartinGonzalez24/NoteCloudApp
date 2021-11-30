@@ -11,8 +11,8 @@ const LoginScreen = () => {
     const { isLoading } = useSelector((state: RootState) => state.ui);
 
     const { formValues, onChangeForm } = useForm({
-        email: 'nando@gmail.com',
-        password: '123456'
+        email: '',
+        password: ''
     });
 
     const handleSubmit = (e: React.FormEvent) => {
