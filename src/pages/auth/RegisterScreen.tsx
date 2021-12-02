@@ -1,17 +1,17 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { errorNotify } from '../../helpers/alerts';
 import Utility from '../../helpers/Utility';
 import { useForm } from '../../hooks/useForm';
 import { registerWithEmailPassword } from '../../redux/actionCreators/authCreator';
-import { removeError, setError } from '../../redux/actionCreators/uiCreator';
+import { setLoading } from '../../redux/actionCreators/uiCreator';
 import { RootState } from '../../redux/store';
 
 const RegisterScreen = () => {
 
     const dispatch = useDispatch();
-    const { ui } = useSelector((state: RootState) => state);
+    const { isAppLoading } = useSelector((state: RootState) => state.ui);
 
     const { formValues, onChangeForm } = useForm({
         firstName: '',
@@ -23,33 +23,68 @@ const RegisterScreen = () => {
 
     const { firstName, lastName, email, password, passwordConfirm } = formValues;
 
+    const firstInputNameRef = useRef<HTMLInputElement>(null);
+    const lastInputNameRef = useRef<HTMLInputElement>(null);
+    const emailInputRef = useRef<HTMLInputElement>(null);
+    const passwordInputRef = useRef<HTMLInputElement>(null);
+    const passwordConfirmInputRef = useRef<HTMLInputElement>(null);
+
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();        
-        if (isFormValid()) {
+        e.preventDefault();
+        if (!isFormValid()) {
             return;
         }
 
-        // dispatch(removeError());
+        dispatch(setLoading(true))
         dispatch(registerWithEmailPassword(email, password, `${firstName.trim()} ${lastName.trim()}`));
     }
 
     const isFormValid = (): boolean => {
-        if (
-            Utility.isEmptyInput(firstName) ||
-            Utility.isEmptyInput(lastName)
-        ) {
-            errorNotify('First name/last name are not valid and must have at least 3 character');
-            return true;
+        const errorMessageList: string[] = [];
 
-        } else if (Utility.isValidEmail(email) === false) {
-            errorNotify('Email is not valid');
-            return true;
+        if (Utility.isEmptyInput(firstName)) {
+            if (firstInputNameRef.current) {
+                firstInputNameRef.current.style.borderColor = 'red';
+            }
+            errorMessageList.push('First name must has at least 3 character');
+        }
 
-        } else if (Utility.isPasswordValid(password, passwordConfirm) === false) {
-            errorNotify('The password must be at least 8 characters long and match both');
-            return true;
+        if (Utility.isEmptyInput(lastName)) {
+            if (lastInputNameRef.current) {
+                lastInputNameRef.current.style.borderColor = 'red';
+            }
+            errorMessageList.push('Last name must has at least 3 character');
+        }
 
-        } else return false;
+        if (Utility.isValidEmail(email) === false) {
+            if (emailInputRef.current) {
+                emailInputRef.current.style.borderColor = 'red';
+            }
+            errorMessageList.push('Email is not valid');
+        }
+
+        if (Utility.isPasswordValid(password, passwordConfirm) === false) {
+            if (
+                passwordInputRef.current &&
+                passwordConfirmInputRef.current
+            ) {
+                passwordInputRef.current.style.borderColor = 'red';
+                passwordConfirmInputRef.current.style.borderColor = 'red';
+            }
+            errorMessageList.push('The password must be at least 8 characters long and match both');
+        }
+
+        errorMessageList.forEach(errorMessage => {
+            errorNotify(errorMessage);
+        });
+
+        return errorMessageList.length === 0;
+    }
+
+    const handleOnBlurInput = (e: React.FocusEvent<HTMLInputElement>) => {
+        if (e.target.value.length > 0) {
+            e.target.style.borderColor = '#293250';
+        }
     }
 
     return (
@@ -66,6 +101,7 @@ const RegisterScreen = () => {
                     <div className='auth__form-group'>
                         <label htmlFor='last-name' className='mb16'>First Name</label>
                         <input
+                            ref={firstInputNameRef}
                             id='name'
                             name='name'
                             type='text'
@@ -73,12 +109,14 @@ const RegisterScreen = () => {
                             placeholder='First Name'
                             className='auth__input-form mb14'
                             onChange={e => onChangeForm('firstName', e.target.value)}
+                            onBlur={handleOnBlurInput}
                         />
                     </div>
 
                     <div className='auth__form-group'>
                         <label htmlFor='last-name' className='mb16'>Last Name</label>
                         <input
+                            ref={lastInputNameRef}
                             id='last-name'
                             name='last-name'
                             type='text'
@@ -86,6 +124,7 @@ const RegisterScreen = () => {
                             placeholder='Last Name'
                             className='auth__input-form mb14'
                             onChange={e => onChangeForm('lastName', e.target.value)}
+                            onBlur={handleOnBlurInput}
                         />
                     </div>
                 </div>
@@ -93,6 +132,7 @@ const RegisterScreen = () => {
                 <div className='auth__form-group'>
                     <label htmlFor="email-register" className='mb16'>Email</label>
                     <input
+                        ref={emailInputRef}
                         id='email-register'
                         name='email-register'
                         type='text'
@@ -100,12 +140,14 @@ const RegisterScreen = () => {
                         placeholder='Email address'
                         className='auth__input-form mb14'
                         onChange={e => onChangeForm('email', e.target.value)}
+                        onBlur={handleOnBlurInput}
                     />
                 </div>
 
                 <div className='auth__form-group'>
                     <label htmlFor="" className='mb16'>Password</label>
                     <input
+                        ref={passwordInputRef}
                         type='password'
                         id={'password-register'}
                         name={'password-register'}
@@ -113,12 +155,14 @@ const RegisterScreen = () => {
                         placeholder='Password'
                         className='auth__input-form mb14'
                         onChange={e => onChangeForm('password', e.target.value)}
+                        onBlur={handleOnBlurInput}
                     />
                 </div>
 
                 <div className='auth__form-group'>
                     <label htmlFor="password-confirm-register" className='mb16'>Confirm Password</label>
                     <input
+                        ref={passwordConfirmInputRef}
                         type='password'
                         id={'password-confirm-register'}
                         name={'password-confirm-register'}
@@ -126,12 +170,13 @@ const RegisterScreen = () => {
                         placeholder='Confirm password'
                         className='auth__input-form mb14'
                         onChange={e => onChangeForm('passwordConfirm', e.target.value)}
+                        onBlur={handleOnBlurInput}
                     />
                 </div>
 
                 <input
                     type='submit'
-                    value='Register Account'
+                    value={isAppLoading ? 'Loading...' : 'Register Account'}
                     className=''
                     id='auth__btn-login'
                 />

@@ -3,8 +3,10 @@ import { useState } from "react"
 export const useForm = <T extends Object> (initialState: T) => {
     
     const [state, setstate] = useState(initialState);
-    
-    const resetForm = (newFormState = initialState) => {
+
+    const emptyForm = () => setstate(initialState);
+
+    const resetNewFormState = (newFormState = initialState) => {
         setstate(newFormState);
     }
 
@@ -18,6 +20,7 @@ export const useForm = <T extends Object> (initialState: T) => {
     return {
         formValues: state,
         onChangeForm,
-        resetForm
+        resetNewFormState,
+        emptyForm
     }
 }

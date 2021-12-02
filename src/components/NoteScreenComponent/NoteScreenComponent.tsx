@@ -11,7 +11,7 @@ const NoteScreenComponent = () => {
 
     const dispatch = useDispatch();
     const { activeNote } = useSelector((state: RootState) => state.notes)
-    const { formValues, onChangeForm, resetForm } = useForm(activeNote);
+    const { formValues, onChangeForm, resetNewFormState } = useForm(activeNote);
 
     const { title, body } = formValues;
     const activeNoteChangeRef = useRef(activeNote);
@@ -19,10 +19,10 @@ const NoteScreenComponent = () => {
     useEffect(() => {
         if (activeNote.id !== activeNoteChangeRef.current.id) {
             activeNoteChangeRef.current = activeNote;
-            resetForm(activeNote);
+            resetNewFormState(activeNote);
         }
 
-    }, [activeNote, resetForm])
+    }, [activeNote, resetNewFormState])
 
     useEffect(() => {
 
@@ -44,9 +44,7 @@ const NoteScreenComponent = () => {
         Swal.fire({
             confirmButtonColor: '#293250',
             imageUrl: activeNote.imageURL,
-            imageHeight: 500,
-            imageWidth: 850,
-            width: 850,
+            width: 950,
             imageAlt: 'image here'
         })
     }

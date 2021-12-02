@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { confirmationNotify } from '../../helpers/alerts';
 import { signOutProvider } from '../../redux/actionCreators/authCreator';
 import { addNewNote } from '../../redux/actionCreators/noteCreator';
 import { RootState } from '../../redux/store';
@@ -10,8 +11,14 @@ const SideBarComponent = () => {
     const dispatch = useDispatch();
     const { name } = useSelector((state: RootState) => state.auth);
 
-    const handleLogOut = () => {
-        dispatch(signOutProvider());
+    const handleLogOut = async () => {
+        const result = await confirmationNotify('Are you sure you want to log-off?', 'Logout', 'Cancel');
+
+        if (result) {
+            if (result.isConfirmed) {
+                dispatch(signOutProvider());
+            }
+        }
     }
 
     const handleNewNote = () => {

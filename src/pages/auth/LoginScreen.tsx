@@ -1,51 +1,74 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logInWithEmailPassword, signInWithFacebookProvider, signInWithGoogleProvider } from '../../redux/actionCreators/authCreator';
 import { useForm } from '../../hooks/useForm';
-import { RootState } from '../../redux/store';
 import Utility from '../../helpers/Utility';
 import { errorNotify } from '../../helpers/alerts';
+import { RootState } from '../../redux/store';
+import { setLoading } from '../../redux/actionCreators/uiCreator';
 
 const LoginScreen = () => {
 
     const dispatch = useDispatch();
-    const { isLoading } = useSelector((state: RootState) => state.ui);
+    const { isAppLoading } = useSelector((state: RootState) => state.ui)
 
-    const { formValues, onChangeForm } = useForm({
+    const { formValues, onChangeForm, emptyForm } = useForm({
         email: '',
         password: ''
     });
 
     const { email, password } = formValues;
 
+    const emailInputRef = useRef<HTMLInputElement>(null);
+    const passwordInputRef = useRef<HTMLInputElement>(null);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (isFormValid()) {
+        if (!isFormValid()) {
             return;
         }
 
+        dispatch(setLoading(true));
         dispatch(logInWithEmailPassword(formValues.email, formValues.password));
     }
 
     const hanldeGoogleLogin = () => {
+        dispatch(setLoading(true))
         dispatch(signInWithGoogleProvider());
     }
 
     const hanldeFacebookLogin = () => {
+        dispatch(setLoading(true))
         dispatch(signInWithFacebookProvider());
     }
 
     const isFormValid = (): boolean => {
-        if (
-            Utility.isEmptyInput(email) ||
-            Utility.isEmptyInput(password)
-        ) {
-            errorNotify('Fill in the required fields');
-            return true;
+        const errorMessageList: string[] = [];
 
-        } else return false;
+        if (Utility.isEmptyInput(email)){
+            emailInputRef.current!.style.borderColor = 'red';
+            if (Utility.isEmptyInput(password)) passwordInputRef.current!.style.borderColor = 'red';            
+            errorMessageList.push('Please fill the inputs');
+        }
+
+        if (Utility.isValidEmail(email) === false) {
+            errorMessageList.push('Email is not valid');
+        }
+
+        errorMessageList.forEach(errorMessage => {
+            errorNotify(errorMessage);
+        });
+
+        emptyForm();
+        return errorMessageList.length === 0;
+    }
+
+    const handleOnBlurInput = (e: React.FocusEvent<HTMLInputElement>) => {
+        if (e.target.value.length > 0) {
+            e.target.style.borderColor = '#293250';
+        }
     }
 
     return (
@@ -61,6 +84,7 @@ const LoginScreen = () => {
                 <div className='auth__form-group'>
                     <label htmlFor="email" className='mb16'>Email</label>
                     <input
+                        ref={emailInputRef}
                         id='email'
                         name='email'
                         type='text'
@@ -68,6 +92,7 @@ const LoginScreen = () => {
                         className='auth__input-form mb14'
                         value={email}
                         onChange={e => onChangeForm('email', e.target.value)}
+                        onBlur={handleOnBlurInput}
                     />
                 </div>
 
@@ -77,6 +102,7 @@ const LoginScreen = () => {
                         <Link to='/'>Forgot Password?</Link>
                     </div>
                     <input
+                        ref={passwordInputRef}
                         id='password'
                         name='password'
                         type='password'
@@ -84,15 +110,16 @@ const LoginScreen = () => {
                         className='auth__input-form mb14'
                         value={password}
                         onChange={e => onChangeForm('password', e.target.value)}
+                        onBlur={handleOnBlurInput}
                     />
                 </div>
 
                 <input
                     type='submit'
-                    value={isLoading ? 'Loading...' : 'Log in'}
+                    value={isAppLoading ? 'Loading...' : 'Log in'}
                     className=''
                     id='auth__btn-login'
-                    disabled={isLoading}
+                    disabled={isAppLoading}
                 />
             </form>
 
@@ -105,17 +132,17 @@ const LoginScreen = () => {
                     <span className='auth__line-span'></span>
                 </span>
 
-                <button className="auth__btn-google mb16" onClick={hanldeGoogleLogin}>
+                <button className="auth__btn-google mb16" onClick={hanldeGoogleLogin} disabled={isAppLoading}>
                     <i className="ri-google-fill ri-xl"></i>
                     <span className='ml10'>Google</span>
                 </button>
 
-                <button className="auth__btn-facebook" onClick={hanldeFacebookLogin}>
+                <button className="auth__btn-facebook" onClick={hanldeFacebookLogin} disabled={isAppLoading}>
                     <i className="ri-facebook-circle-fill ri-xl"></i>
                     <span className='ml10'>Facebook</span>
                 </button>
 
-                <div className='mt16'>                    
+                <div className='mt16'>
                     <Link to='/auth/register'>Don't have an account? Sign up!</Link>
                 </div>
             </div>

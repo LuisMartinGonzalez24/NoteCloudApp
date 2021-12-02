@@ -2,37 +2,19 @@ import { Action } from "../actions";
 import { UIActionType } from "../actionTypes/actionTypes";
 
 interface UIState {
-    isLoading: boolean,
-    isError: boolean;
-    errorMessage: string;
+    isAppLoading: boolean,
 }
 
 const initialState: UIState = {
-    isLoading: false,
-    isError: false,
-    errorMessage: '',
+    isAppLoading: false,
 }
 
 export const uiReducer = (state = initialState, action: Action): UIState => {
     switch (action.type) {
-        case UIActionType.UI_SET_ERROR:
+        case UIActionType.UI_APP_LOADING:
             return {
                 ...state,
-                isError: true,
-                errorMessage: action.payload.errorMessage,
-            };
-
-        case UIActionType.UI_REMOVE_ERROR:
-            return {
-                ...state,
-                isError: false,
-                errorMessage: ''
-            }
-
-        case UIActionType.UI_SET_LOADING:
-            return {
-                ...state,
-                isLoading: action.payload,
+                isAppLoading: action.payload,
             }
 
         default:

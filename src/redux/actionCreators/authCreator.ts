@@ -12,6 +12,7 @@ import { errorNotify } from '../../helpers/alerts';
 import { Action } from '../actions';
 import { AuthActionType, NoteActionType } from '../actionTypes/actionTypes';
 import { setLoading } from './uiCreator';
+import { getMessageFirebaseErrorCode } from '../../helpers/getMessageFirebaseErrorCode';
 
 const authLogIn = (payload: { uid: string, displayName: string }): Action => (
     {
@@ -43,8 +44,6 @@ const signOutProvider = () => {
 const logInWithEmailPassword = (email: string, password: string,) => {
     return (dispatch: Dispatch<Action>) => {
 
-        dispatch(setLoading(true))
-
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
@@ -59,7 +58,7 @@ const logInWithEmailPassword = (email: string, password: string,) => {
             })
             .catch((ex) => {
                 console.log('>> logInWithEmailPassword error: ', ex);
-                errorNotify('Error trying to sign in!')
+                errorNotify(getMessageFirebaseErrorCode(ex.code))
                 dispatch(setLoading(false))
             });
     }
@@ -74,14 +73,17 @@ const registerWithEmailPassword = (email: string, password: string, name: string
                     displayName: name,
                 })
 
+                dispatch(setLoading(false));
                 dispatch(authLogIn({
                     uid: userCredential.user.uid,
                     displayName: userCredential.user.displayName!,
                 }));
             })
-            .catch((ex) => {
+            .catch((ex: FirebaseError) => {
+
+                dispatch(setLoading(false));
                 console.log('>> registerWithEmailPassword error: ', ex);
-                errorNotify('Error trying to register!')
+                errorNotify(getMessageFirebaseErrorCode(ex.code))
             });
 
     }
@@ -91,8 +93,9 @@ const signInWithGoogleProvider = () => {
     return (dispatch: Dispatch<Action>) => {
         signInWithPopup(auth, googleProvider)
             .then((result) => {
-
+                dispatch(setLoading(false));
             }).catch((ex: FirebaseError) => {
+                dispatch(setLoading(false));
                 console.log('>> signInWithGoogleProvider: ', ex);
                 errorNotify('Error trying sign in with google!')
             });
@@ -104,12 +107,14 @@ const signInWithFacebookProvider = () => {
         signInWithPopup(auth, facebookProvider)
             .then((result) => {
                 // The signed-in user info.
+                dispatch(setLoading(false));
                 const user = result.user;
                 console.log(user)
 
             }).catch((ex: FirebaseError) => {
+                dispatch(setLoading(false));
                 console.log('>> signInWithFacebookProvider: ', ex);
-                errorNotify('Error trying sign in with facebook!')
+                errorNotify(getMessageFirebaseErrorCode(ex.code))
             });
     }
 }
