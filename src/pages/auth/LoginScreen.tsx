@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logInWithEmailPassword, signInWithGoogleProvider } from '../../redux/actionCreators/authCreator';
+import { logInWithEmailPassword, signInWithFacebookProvider, signInWithGoogleProvider } from '../../redux/actionCreators/authCreator';
 import { useForm } from '../../hooks/useForm';
 import { RootState } from '../../redux/store';
+import Utility from '../../helpers/Utility';
+import { errorNotify } from '../../helpers/alerts';
 
 const LoginScreen = () => {
 
@@ -15,13 +17,35 @@ const LoginScreen = () => {
         password: ''
     });
 
+    const { email, password } = formValues;
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (isFormValid()) {
+            return;
+        }
+
         dispatch(logInWithEmailPassword(formValues.email, formValues.password));
     }
 
     const hanldeGoogleLogin = () => {
         dispatch(signInWithGoogleProvider());
+    }
+
+    const hanldeFacebookLogin = () => {
+        dispatch(signInWithFacebookProvider());
+    }
+
+    const isFormValid = (): boolean => {
+        if (
+            Utility.isEmptyInput(email) ||
+            Utility.isEmptyInput(password)
+        ) {
+            errorNotify('Fill in the required fields');
+            return true;
+
+        } else return false;
     }
 
     return (
@@ -42,7 +66,7 @@ const LoginScreen = () => {
                         type='text'
                         placeholder='Email address'
                         className='auth__input-form mb14'
-                        value={formValues.email}
+                        value={email}
                         onChange={e => onChangeForm('email', e.target.value)}
                     />
                 </div>
@@ -58,7 +82,7 @@ const LoginScreen = () => {
                         type='password'
                         placeholder='Password'
                         className='auth__input-form mb14'
-                        value={formValues.password}
+                        value={password}
                         onChange={e => onChangeForm('password', e.target.value)}
                     />
                 </div>
@@ -86,7 +110,7 @@ const LoginScreen = () => {
                     <span className='ml10'>Google</span>
                 </button>
 
-                <button className="auth__btn-facebook">
+                <button className="auth__btn-facebook" onClick={hanldeFacebookLogin}>
                     <i className="ri-facebook-circle-fill ri-xl"></i>
                     <span className='ml10'>Facebook</span>
                 </button>

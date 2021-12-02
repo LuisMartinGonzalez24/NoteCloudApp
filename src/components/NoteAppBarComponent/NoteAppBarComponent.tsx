@@ -16,7 +16,9 @@ const NoteAppBarComponent = () => {
     }
 
     const handleUploadPicture = async () => {
-        fileSelectorRef.current?.click();
+        if (fileSelectorRef.current) {
+            fileSelectorRef.current.click();
+        }
     }
 
     const handleFileSelectorChange = (selectorFiles: FileList | null) => {
@@ -25,6 +27,10 @@ const NoteAppBarComponent = () => {
 
             if (file.type.includes('image')) {
                 dispatch(uploadPicture(file));
+                dispatch(saveNote());
+                if (fileSelectorRef.current) {
+                    fileSelectorRef.current.files = null;
+                }
             } else {
                 errorNotify('The file must be a image');
             }

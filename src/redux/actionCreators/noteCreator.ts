@@ -116,6 +116,7 @@ const uploadPicture = (file: File) => {
                 ...activeNote,
                 imageURL: pictureUrl,
             }))
+            
         } else {
             errorNotify('Error Uploading picture')
         }

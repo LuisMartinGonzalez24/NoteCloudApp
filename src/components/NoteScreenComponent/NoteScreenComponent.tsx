@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import { confirmationNotify } from '../../helpers/alerts';
 import { useForm } from '../../hooks/useForm';
 import { deleteNote, updateNote } from '../../redux/actionCreators/noteCreator';
@@ -39,6 +40,17 @@ const NoteScreenComponent = () => {
         }
     }
 
+    const seeImage = () => {
+        Swal.fire({
+            confirmButtonColor: '#293250',
+            imageUrl: activeNote.imageURL,
+            imageHeight: 500,
+            imageWidth: 850,
+            width: 850,
+            imageAlt: 'image here'
+        })
+    }
+
     return (
         <div className='note__main-content'>
             <NoteAppBarComponent />
@@ -66,7 +78,7 @@ const NoteScreenComponent = () => {
                 ></textarea>
 
                 {(activeNote.imageURL && activeNote.imageURL.length > 0) && (
-                    <div className='note__image'>
+                    <div className='note__image' onClick={seeImage}>
                         <img src={activeNote.imageURL} alt="img preview" />
                     </div>
                 )}

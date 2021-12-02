@@ -1,3 +1,4 @@
+import { FirebaseError } from '@firebase/util';
 import {
     signOut,
     updateProfile,
@@ -6,7 +7,7 @@ import {
     createUserWithEmailAndPassword
 } from 'firebase/auth';
 import { Dispatch } from "redux"
-import { auth, googleProvider } from '../../firebase/firebaseConfig';
+import { auth, facebookProvider, googleProvider } from '../../firebase/firebaseConfig';
 import { errorNotify } from '../../helpers/alerts';
 import { Action } from '../actions';
 import { AuthActionType, NoteActionType } from '../actionTypes/actionTypes';
@@ -35,7 +36,7 @@ const signOutProvider = () => {
             })
         } catch (ex) {
             console.log(ex)
-        }        
+        }
     }
 }
 
@@ -54,7 +55,7 @@ const logInWithEmailPassword = (email: string, password: string,) => {
                         displayName: user.displayName!,
                     }
                 ))
-                dispatch(setLoading(false))                
+                dispatch(setLoading(false))
             })
             .catch((ex) => {
                 console.log('>> logInWithEmailPassword error: ', ex);
@@ -91,14 +92,28 @@ const signInWithGoogleProvider = () => {
         signInWithPopup(auth, googleProvider)
             .then((result) => {
 
-            }).catch((ex) => {
+            }).catch((ex: FirebaseError) => {
                 console.log('>> signInWithGoogleProvider: ', ex);
                 errorNotify('Error trying sign in with google!')
             });
     }
 }
 
+const signInWithFacebookProvider = () => {
+    return (dispatch: Dispatch<Action>) => {
+        signInWithPopup(auth, facebookProvider)
+            .then((result) => {
+                // The signed-in user info.
+                const user = result.user;
+                console.log(user)
 
-export { 
-    authLogIn, authLogOut, signOutProvider, logInWithEmailPassword, registerWithEmailPassword, signInWithGoogleProvider 
+            }).catch((ex: FirebaseError) => {
+                console.log('>> signInWithFacebookProvider: ', ex);
+                errorNotify('Error trying sign in with facebook!')
+            });
+    }
+}
+
+export {
+    authLogIn, authLogOut, signOutProvider, logInWithEmailPassword, registerWithEmailPassword, signInWithGoogleProvider, signInWithFacebookProvider
 };
