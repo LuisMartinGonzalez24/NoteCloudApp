@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/styles.scss';
-import JournalApp from './JournalApp'
+import NoteCloudApp from './NoteCloudApp';
 
 ReactDOM.render(
   <React.StrictMode>
-    <JournalApp />
+    <NoteCloudApp />
   </React.StrictMode>,
   document.getElementById('root')
 );

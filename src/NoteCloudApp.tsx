@@ -3,10 +3,10 @@ import AppRouter from './routers/AppRouter';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 
-const JournalApp = () => (
+const NoteCloudApp = () => (
     <Provider store = {store}>
         <AppRouter/>
     </Provider>
 )
 
-export default JournalApp;
+export default NoteCloudApp;

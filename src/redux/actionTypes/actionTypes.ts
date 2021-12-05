@@ -5,7 +5,15 @@ export enum AuthActionType {
 }
 
 export enum UIActionType {
-    UI_SET_ERROR = '[UI] Set Error',
-    UI_REMOVE_ERROR = '[UI] Set Remove Error',
-    UI_SET_LOADING = '[UI] Set Loading',
+    UI_APP_LOADING = '[UI] Set Loading',
+}
+
+export enum NoteActionType {
+    SAVE_NOTE = '[Note] Save Note',
+    ADD_NEW_NOTE = '[Note] Add New Note',
+    DELETE_NOTE = '[Note] Delete Note',
+    UPDATE_NOTE = '[Note] Update Note',
+    LOAD_NOTES = '[Note] Load Notes',
+    SET_ACTIVE_NOTE = '[Note] Set Active Note',
+    CLEAN_NOTES = '[Note] Clean Notes',
 }

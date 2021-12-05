@@ -33,6 +33,9 @@ export default class Utility {
         } else if (textInput.length === 0) {
             return true;
 
+        } else if (textInput.length < 3) {
+            return true;
+
         } else return false;
     }
 }

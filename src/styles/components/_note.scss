@@ -1,5 +1,6 @@
 
 .note__main-content {
+    background-color: $dark-white;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -21,6 +22,40 @@
     padding: 20px 35px;
 }
 
+.note__title-date {
+    color: $secondary;
+    font-size: xx-large;
+    font-weight: 800;
+}
+
+.note__btn-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+    width: 400px;
+    
+    .note__btn-picture, .note__btn-save {
+        align-items: center;
+        border-radius: 6px;
+        border: none;
+        display: flex;
+        font-size: large;
+        justify-content: center;
+        transition: all .4s ease;
+    
+        span {
+            font-weight: 600;
+        }
+        
+        &:hover {
+            background-color: $secondary;
+            color: $white;
+        }
+    
+        @include generalButton($white, $secondary);
+    }
+}
+
 .note__input, .note__textarea {
     border: none;
     &:focus {
@@ -29,19 +64,45 @@
 }
 
 .note__input {
-    color: black;
-    font-size: 28px;
+    background-color: $dark-white;
+    color: $secondary;
+    font-size: 30px;
     font-weight: 700;
 }
 
 .note__textarea {
+    background-color: $dark-white;
+    color: $secondary;
     flex: 1 1 auto;
-    font-size: 16px;
+    font-size: 20px;
+    font-weight: normal;
     resize: none;
 }
 
 .note__image img {
     box-shadow: 6px 6px rgba(0, 0, 0, 0.7);
-    height: 150px;
+    cursor: pointer;
+    height: 250px;
     border-radius: 6px;
+}
+
+.note__btn-delete {
+    align-items: center;
+    border: none;
+    background-color: #e63946;
+    color: $white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    padding: 14px 0;
+    transition: background-color .3s ease;
+    
+    span {
+        font-weight: 600;
+        font-size: x-large;
+    }
+
+    &:hover {
+        background-color: darken($color: #e63946, $amount: 10);
+    }
 }

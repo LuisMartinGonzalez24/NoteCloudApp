@@ -1,50 +1,90 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { errorNotify } from '../../helpers/alerts';
 import Utility from '../../helpers/Utility';
 import { useForm } from '../../hooks/useForm';
 import { registerWithEmailPassword } from '../../redux/actionCreators/authCreator';
-import { removeError, setError } from '../../redux/actionCreators/uiCreator';
+import { setLoading } from '../../redux/actionCreators/uiCreator';
 import { RootState } from '../../redux/store';
 
 const RegisterScreen = () => {
 
     const dispatch = useDispatch();
-    const { ui } = useSelector((state: RootState) => state);
+    const { isAppLoading } = useSelector((state: RootState) => state.ui);
 
-    const { form, onChange } = useForm({
+    const { formValues, onChangeForm } = useForm({
         firstName: '',
         lastName: '',
-        email: 'elvergalar@gmail.com',
-        password: '12345678',
-        passwordConfirm: '12345678',
+        email: '',
+        password: '',
+        passwordConfirm: '',
     });
 
-    console.log(ui.isError)
+    const { firstName, lastName, email, password, passwordConfirm } = formValues;
 
-    const { email, password, passwordConfirm } = form;
+    const firstInputNameRef = useRef<HTMLInputElement>(null);
+    const lastInputNameRef = useRef<HTMLInputElement>(null);
+    const emailInputRef = useRef<HTMLInputElement>(null);
+    const passwordInputRef = useRef<HTMLInputElement>(null);
+    const passwordConfirmInputRef = useRef<HTMLInputElement>(null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
-        if (isFormValid()) {
+        if (!isFormValid()) {
             return;
         }
 
-        dispatch(removeError());
-        dispatch(registerWithEmailPassword(email, password, 'Elver Galar'));
+        dispatch(setLoading(true))
+        dispatch(registerWithEmailPassword(email, password, `${firstName.trim()} ${lastName.trim()}`));
     }
 
     const isFormValid = (): boolean => {
+        const errorMessageList: string[] = [];
+
+        if (Utility.isEmptyInput(firstName)) {
+            if (firstInputNameRef.current) {
+                firstInputNameRef.current.style.borderColor = 'red';
+            }
+            errorMessageList.push('First name must has at least 3 character');
+        }
+
+        if (Utility.isEmptyInput(lastName)) {
+            if (lastInputNameRef.current) {
+                lastInputNameRef.current.style.borderColor = 'red';
+            }
+            errorMessageList.push('Last name must has at least 3 character');
+        }
+
         if (Utility.isValidEmail(email) === false) {
-            dispatch(setError('Email is not valid'));
-            return true;
+            if (emailInputRef.current) {
+                emailInputRef.current.style.borderColor = 'red';
+            }
+            errorMessageList.push('Email is not valid');
+        }
 
-        } else if (Utility.isPasswordValid(password, passwordConfirm) === false) {
-            dispatch(setError('The password must be at least 8 characters long and match both'));
-            return true;
+        if (Utility.isPasswordValid(password, passwordConfirm) === false) {
+            if (
+                passwordInputRef.current &&
+                passwordConfirmInputRef.current
+            ) {
+                passwordInputRef.current.style.borderColor = 'red';
+                passwordConfirmInputRef.current.style.borderColor = 'red';
+            }
+            errorMessageList.push('The password must be at least 8 characters long and match both');
+        }
 
-        } else return false;
+        errorMessageList.forEach(errorMessage => {
+            errorNotify(errorMessage);
+        });
+
+        return errorMessageList.length === 0;
+    }
+
+    const handleOnBlurInput = (e: React.FocusEvent<HTMLInputElement>) => {
+        if (e.target.value.length > 0) {
+            e.target.style.borderColor = '#293250';
+        }
     }
 
     return (
@@ -57,56 +97,94 @@ const RegisterScreen = () => {
             {/** Login Forn*/}
             <form onSubmit={handleSubmit}>
                 {/**TODO: change name of input group */}
-                <div className='auth__container-input-1'>
-                    <label htmlFor="" className='mb8'>Email</label>
+                <div className='auth__container-name'>
+                    <div className='auth__form-group'>
+                        <label htmlFor='last-name' className='mb16'>First Name</label>
+                        <input
+                            ref={firstInputNameRef}
+                            id='name'
+                            name='name'
+                            type='text'
+                            value={firstName}
+                            placeholder='First Name'
+                            className='auth__input-form mb14'
+                            onChange={e => onChangeForm('firstName', e.target.value)}
+                            onBlur={handleOnBlurInput}
+                        />
+                    </div>
+
+                    <div className='auth__form-group'>
+                        <label htmlFor='last-name' className='mb16'>Last Name</label>
+                        <input
+                            ref={lastInputNameRef}
+                            id='last-name'
+                            name='last-name'
+                            type='text'
+                            value={lastName}
+                            placeholder='Last Name'
+                            className='auth__input-form mb14'
+                            onChange={e => onChangeForm('lastName', e.target.value)}
+                            onBlur={handleOnBlurInput}
+                        />
+                    </div>
+                </div>
+
+                <div className='auth__form-group'>
+                    <label htmlFor="email-register" className='mb16'>Email</label>
                     <input
+                        ref={emailInputRef}
+                        id='email-register'
+                        name='email-register'
                         type='text'
                         value={email}
                         placeholder='Email address'
                         className='auth__input-form mb14'
-                        onChange={e => onChange('email', e.target.value)}
+                        onChange={e => onChangeForm('email', e.target.value)}
+                        onBlur={handleOnBlurInput}
                     />
                 </div>
 
-                <div className='auth__container-input-2'>
-                    <label htmlFor="" className='mb8'>Password</label>
-
+                <div className='auth__form-group'>
+                    <label htmlFor="" className='mb16'>Password</label>
                     <input
-                        type='text'
-                        id={'password'}
-                        name={'password'}
+                        ref={passwordInputRef}
+                        type='password'
+                        id={'password-register'}
+                        name={'password-register'}
                         value={password}
                         placeholder='Password'
                         className='auth__input-form mb14'
-                        onChange={e => onChange('password', e.target.value)}
+                        onChange={e => onChangeForm('password', e.target.value)}
+                        onBlur={handleOnBlurInput}
                     />
                 </div>
 
-                <div className='auth__container-input-2'>
-                    <label htmlFor="" className='mb8'>Confirm Password</label>
+                <div className='auth__form-group'>
+                    <label htmlFor="password-confirm-register" className='mb16'>Confirm Password</label>
                     <input
-                        type='text'
-                        id={'passwordConfirm'}
-                        name={'passwordConfirm'}
+                        ref={passwordConfirmInputRef}
+                        type='password'
+                        id={'password-confirm-register'}
+                        name={'password-confirm-register'}
                         value={passwordConfirm}
                         placeholder='Confirm password'
                         className='auth__input-form mb14'
-                        onChange={e => onChange('passwordConfirm', e.target.value)}
+                        onChange={e => onChangeForm('passwordConfirm', e.target.value)}
+                        onBlur={handleOnBlurInput}
                     />
                 </div>
 
                 <input
                     type='submit'
-                    value='Register Account'
+                    value={isAppLoading ? 'Loading...' : 'Register Account'}
                     className=''
                     id='auth__btn-login'
                 />
+
+                <div className='mt16'>
+                    <Link to='/auth/login' >Already have an account? Sign in!</Link>
+                </div>
             </form>
-
-            <span className='auth__title-login-socials'>
-                <Link to='/auth/login' className='p16' id='auth__span-title'>Already have an account? Login!h</Link>
-            </span>
-
         </>
     )
 }

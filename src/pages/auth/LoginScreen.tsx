@@ -1,27 +1,69 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logInWithEmailPassword, signInWithGoogleProvider } from '../../redux/actionCreators/authCreator';
 import { useForm } from '../../hooks/useForm';
+import Utility from '../../helpers/Utility';
+import { errorNotify } from '../../helpers/alerts';
 import { RootState } from '../../redux/store';
+import { setLoading } from '../../redux/actionCreators/uiCreator';
 
 const LoginScreen = () => {
 
     const dispatch = useDispatch();
-    const { isLoading } = useSelector((state: RootState) => state.ui);
+    const { isAppLoading } = useSelector((state: RootState) => state.ui)
 
-    const { form, onChange } = useForm({
-        email: 'nando@gmail.com',
-        password: '123456'
+    const { formValues, onChangeForm, emptyForm } = useForm({
+        email: '',
+        password: ''
     });
+
+    const { email, password } = formValues;
+
+    const emailInputRef = useRef<HTMLInputElement>(null);
+    const passwordInputRef = useRef<HTMLInputElement>(null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(logInWithEmailPassword(form.email, form.password));
+
+        if (!isFormValid()) {
+            return;
+        }
+
+        dispatch(setLoading(true));
+        dispatch(logInWithEmailPassword(formValues.email, formValues.password));
     }
 
     const hanldeGoogleLogin = () => {
+        dispatch(setLoading(true))
         dispatch(signInWithGoogleProvider());
+    }
+
+    const isFormValid = (): boolean => {
+        const errorMessageList: string[] = [];
+
+        if (Utility.isEmptyInput(email)) {
+            emailInputRef.current!.style.borderColor = 'red';
+            if (Utility.isEmptyInput(password)) passwordInputRef.current!.style.borderColor = 'red';
+            errorMessageList.push('Please fill the inputs');
+        }
+
+        if (Utility.isValidEmail(email) === false) {
+            errorMessageList.push('Email is not valid');
+        }
+
+        errorMessageList.forEach(errorMessage => {
+            errorNotify(errorMessage);
+        });
+
+        emptyForm();
+        return errorMessageList.length === 0;
+    }
+
+    const handleOnBlurInput = (e: React.FocusEvent<HTMLInputElement>) => {
+        if (e.target.value.length > 0) {
+            e.target.style.borderColor = '#293250';
+        }
     }
 
     return (
@@ -33,38 +75,43 @@ const LoginScreen = () => {
             </div>
 
             {/** Login Forn*/}
-            <form onSubmit={handleSubmit}>
-                <div className='auth__container-input-1'>
-                    <label htmlFor="" className='mb8'>Email</label>
+            <form onSubmit={handleSubmit} spellCheck={false}>
+                <div className='auth__form-group'>
+                    <label htmlFor="email" className='mb16'>Email</label>
                     <input
+                        ref={emailInputRef}
+                        id='email'
+                        name='email'
                         type='text'
                         placeholder='Email address'
                         className='auth__input-form mb14'
-                        value={form.email}
-                        onChange={e => onChange('email', e.target.value)}
+                        value={email}
+                        onChange={e => onChangeForm('email', e.target.value)}
+                        onBlur={handleOnBlurInput}
                     />
                 </div>
 
-                <div className='auth__container-input-2'>
-                    <div className='mb8'>
-                        <label htmlFor="">Password</label>
-                        <Link to='/'>Forgot Password?</Link>
-                    </div>
+                <div className='auth__form-group'>
+                    <label htmlFor="password" className='mb16'>Password</label>
                     <input
-                        type='text'
+                        ref={passwordInputRef}
+                        id='password'
+                        name='password'
+                        type='password'
                         placeholder='Password'
                         className='auth__input-form mb14'
-                        value={form.password}
-                        onChange={e => onChange('password', e.target.value)}
+                        value={password}
+                        onChange={e => onChangeForm('password', e.target.value)}
+                        onBlur={handleOnBlurInput}
                     />
                 </div>
 
                 <input
                     type='submit'
-                    value={isLoading ? 'Loading...' : 'Log in'}
+                    value={isAppLoading ? 'Loading...' : 'Log in'}
                     className=''
                     id='auth__btn-login'
-                    disabled={isLoading}
+                    disabled={isAppLoading}
                 />
             </form>
 
@@ -77,27 +124,18 @@ const LoginScreen = () => {
                     <span className='auth__line-span'></span>
                 </span>
 
-                <button className="btn-google mb16" onClick={hanldeGoogleLogin}>
-                    <img className="" src="https://i.imgur.com/arC60SB.png" alt="" />
+                <button className="auth__btn-google" onClick={hanldeGoogleLogin} disabled={isAppLoading}>
+                    <i className="ri-google-fill ri-xl"></i>
                     <span className='ml10'>Google</span>
                 </button>
 
-                <button className="btn-facebook">
-                    <svg
-                        aria-hidden="true"
-                        fill="currentColor"
-                        viewBox="0 0 24 24" width="26" height="26"
-                    >
-                        <path
-                            fillRule="evenodd"
-                            d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"
-                        ></path>
-                    </svg>
-
-                    <span className='ml10'>Facebook</span>
-                </button>
-
-                <Link to='/auth/register' className='mt10'>Don't have an account? Sign up</Link>
+                <div className='mt16'>
+                    <Link to='/auth/register'>Don't have an account? Sign up!</Link>
+                    <div className='mt4'>
+                        Icons made by
+                        <a href="https://www.freepik.com" title="Freepik"> Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+                    </div>
+                </div>
             </div>
 
         </>
