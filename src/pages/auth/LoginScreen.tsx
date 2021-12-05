@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logInWithEmailPassword, signInWithFacebookProvider, signInWithGoogleProvider } from '../../redux/actionCreators/authCreator';
+import { logInWithEmailPassword, signInWithGoogleProvider } from '../../redux/actionCreators/authCreator';
 import { useForm } from '../../hooks/useForm';
 import Utility from '../../helpers/Utility';
 import { errorNotify } from '../../helpers/alerts';
@@ -39,17 +39,12 @@ const LoginScreen = () => {
         dispatch(signInWithGoogleProvider());
     }
 
-    const hanldeFacebookLogin = () => {
-        dispatch(setLoading(true))
-        dispatch(signInWithFacebookProvider());
-    }
-
     const isFormValid = (): boolean => {
         const errorMessageList: string[] = [];
 
-        if (Utility.isEmptyInput(email)){
+        if (Utility.isEmptyInput(email)) {
             emailInputRef.current!.style.borderColor = 'red';
-            if (Utility.isEmptyInput(password)) passwordInputRef.current!.style.borderColor = 'red';            
+            if (Utility.isEmptyInput(password)) passwordInputRef.current!.style.borderColor = 'red';
             errorMessageList.push('Please fill the inputs');
         }
 
@@ -97,10 +92,7 @@ const LoginScreen = () => {
                 </div>
 
                 <div className='auth__form-group'>
-                    <div className='auth__container-password mb16'>
-                        <label htmlFor="password">Password</label>
-                        <Link to='/'>Forgot Password?</Link>
-                    </div>
+                    <label htmlFor="password" className='mb16'>Password</label>
                     <input
                         ref={passwordInputRef}
                         id='password'
@@ -132,18 +124,17 @@ const LoginScreen = () => {
                     <span className='auth__line-span'></span>
                 </span>
 
-                <button className="auth__btn-google mb16" onClick={hanldeGoogleLogin} disabled={isAppLoading}>
+                <button className="auth__btn-google" onClick={hanldeGoogleLogin} disabled={isAppLoading}>
                     <i className="ri-google-fill ri-xl"></i>
                     <span className='ml10'>Google</span>
                 </button>
 
-                <button className="auth__btn-facebook" onClick={hanldeFacebookLogin} disabled={isAppLoading}>
-                    <i className="ri-facebook-circle-fill ri-xl"></i>
-                    <span className='ml10'>Facebook</span>
-                </button>
-
                 <div className='mt16'>
                     <Link to='/auth/register'>Don't have an account? Sign up!</Link>
+                    <div className='mt4'>
+                        Icons made by
+                        <a href="https://www.freepik.com" title="Freepik"> Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+                    </div>
                 </div>
             </div>
 

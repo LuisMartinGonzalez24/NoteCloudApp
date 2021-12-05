@@ -7,7 +7,7 @@ import {
     createUserWithEmailAndPassword
 } from 'firebase/auth';
 import { Dispatch } from "redux"
-import { auth, facebookProvider, googleProvider } from '../../firebase/firebaseConfig';
+import { auth, googleProvider } from '../../firebase/firebaseConfig';
 import { errorNotify } from '../../helpers/alerts';
 import { Action } from '../actions';
 import { AuthActionType, NoteActionType } from '../actionTypes/actionTypes';
@@ -102,23 +102,6 @@ const signInWithGoogleProvider = () => {
     }
 }
 
-const signInWithFacebookProvider = () => {
-    return (dispatch: Dispatch<Action>) => {
-        signInWithPopup(auth, facebookProvider)
-            .then((result) => {
-                // The signed-in user info.
-                dispatch(setLoading(false));
-                const user = result.user;
-                console.log(user)
-
-            }).catch((ex: FirebaseError) => {
-                dispatch(setLoading(false));
-                console.log('>> signInWithFacebookProvider: ', ex);
-                errorNotify(getMessageFirebaseErrorCode(ex.code))
-            });
-    }
-}
-
 export {
-    authLogIn, authLogOut, signOutProvider, logInWithEmailPassword, registerWithEmailPassword, signInWithGoogleProvider, signInWithFacebookProvider
+    authLogIn, authLogOut, signOutProvider, logInWithEmailPassword, registerWithEmailPassword, signInWithGoogleProvider,
 };
